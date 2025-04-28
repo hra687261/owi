@@ -107,6 +107,8 @@
 <a id="L83"></a><span > </span>
 <a id="L84"></a><span > </span>
 <a id="L85"></a><span > </span>
+<a id="L86"></a><span > </span>
+<a id="L87"></a><span > </span>
 </pre>
       </div>
       <div id="text-layer">
@@ -196,6 +198,8 @@
 <a href="#L83">83</a>
 <a href="#L84">84</a>
 <a href="#L85">85</a>
+<a href="#L86">86</a>
+<a href="#L87">87</a>
 </pre>
 <pre><code class="ocaml">(* SPDX-License-Identifier: AGPL-3.0-or-later *)
 (* Copyright © 2021-2024 OCamlPro *)
@@ -203,8 +207,8 @@
 
 type 'a eval =
   | EVal of 'a
-  | ETrap of Trap.t * Smtml.Model.t * (int * string) list * int32 list
-  | EAssert of Smtml.Expr.t * Smtml.Model.t * (int * string) list * int32 list
+  | ETrap of Result.err * Smtml.Model.t * (int * string) list * int list
+  | EAssert of Smtml.Expr.t * Smtml.Model.t * (int * string) list * int list
 
 module type S = sig
   module V : Func_intf.Value_types
@@ -225,7 +229,7 @@ module type S = sig
 
   val ( let+ ) : 'a t -&gt; ('a -&gt; 'b) -&gt; 'b t
 
-  val trap : Trap.t -&gt; 'a t
+  val trap : Result.err -&gt; 'a t
 
   val select : V.bool -&gt; Bool.t t
 
@@ -242,6 +246,8 @@ module type S = sig
   val thread : thread t
 
   val add_pc : V.bool -&gt; unit t
+
+  val get_pc : unit -&gt; Smtml.Expr.Set.t t
 
   val add_label : int * string -&gt; unit t
 
@@ -276,7 +282,7 @@ module type Intf = sig
     end
   end
 
-  module Make (Thread : Thread.S) :
+  module Make (Thread : Thread_intf.S) :
     S
       with type 'a t = ('a eval, Thread.t) CoreImpl.State.t
        and type thread := Thread.t
