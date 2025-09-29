@@ -36,27 +36,22 @@
 <a id="L12"></a><span > </span>
 <a id="L13"></a><span > </span>
 <a id="L14"></a><span > </span>
-<a id="L15"></a><span > </span>
+<a id="L15"></a><span class="visited"> </span>
 <a id="L16"></a><span > </span>
 <a id="L17"></a><span > </span>
-<a id="L18"></a><span > </span>
+<a id="L18"></a><span class="visited"> </span>
 <a id="L19"></a><span > </span>
 <a id="L20"></a><span > </span>
-<a id="L21"></a><span > </span>
-<a id="L22"></a><span > </span>
-<a id="L23"></a><span class="visited"> </span>
-<a id="L24"></a><span > </span>
+<a id="L21"></a><span class="visited"> </span>
+<a id="L22"></a><span class="visited"> </span>
+<a id="L23"></a><span > </span>
+<a id="L24"></a><span class="visited"> </span>
 <a id="L25"></a><span > </span>
-<a id="L26"></a><span class="visited"> </span>
+<a id="L26"></a><span > </span>
 <a id="L27"></a><span class="visited"> </span>
-<a id="L28"></a><span > </span>
-<a id="L29"></a><span class="visited"> </span>
-<a id="L30"></a><span > </span>
-<a id="L31"></a><span > </span>
-<a id="L32"></a><span class="visited"> </span>
-<a id="L33"></a><span > </span>
-<a id="L34"></a><span > </span>
-<a id="L35"></a><span class="visited"> </span>
+<a id="L28"></a><span class="visited"> </span>
+<a id="L29"></a><span > </span>
+<a id="L30"></a><span class="visited"> </span>
 </pre>
       </div>
       <div id="text-layer">
@@ -91,11 +86,6 @@
 <a href="#L28">28</a>
 <a href="#L29">29</a>
 <a href="#L30">30</a>
-<a href="#L31">31</a>
-<a href="#L32">32</a>
-<a href="#L33">33</a>
-<a href="#L34">34</a>
-<a href="#L35">35</a>
 </pre>
 <pre><code class="ocaml">(* SPDX-License-Identifier: AGPL-3.0-or-later *)
 (* Copyright © 2021-2024 OCamlPro *)
@@ -109,29 +99,24 @@ let extern_module : Concrete_extern_func.extern_func Link.extern_module =
     <span data-count="1">a</span>ssert <span data-count="1">(</span>no<span data-count="1">t</span> @@ Prelude.Int32.equa<span data-count="1">l</span> n 0l);
     Ok ()
   in
-  let functions =
-    [ ( "assert"
-      , Concrete_extern_func.Extern_func (Func (Arg (I32, Res), R0), assert_i32)
-      )
-    ]
-  in
+  let open Concrete.Extern_func in
+  let open Concrete.Extern_func.Syntax in
+  let functions = [ ("assert", Extern_func (i32 ^-&gt;<span data-count="880">.</span> unit, assert_i32)) ] in
   { functions }
 
-(* module name is called "symbolic" to be compatible with code generator *)
-let link_state =
-  Link.extern_modul<span data-count="1012">e</span> Link.empty_state ~name:"symbolic" extern_module
+let link_state = Link.extern_modul<span data-count="880">e</span> Link.empty_state ~name:"owi" extern_module
 
-let run_file ~unsafe ~rac ~optimize filename =
-  <span data-count="35">l</span>et name = None in
-  let link_state = if rac then <span data-count="1">l</span>ink_state else <span data-count="34">L</span>ink.empty_state in
-  let+ (_ : _ Link.state) =
-    Compile.File.until_interpre<span data-count="35">t</span> ~unsafe ~rac ~srac:false ~optimize ~name
-      link_state filename
+let cmd ~unsafe ~timeout ~timeout_instr ~rac ~source_file =
+  <span data-count="20">l</span>et name = None in
+  let link_state = if rac then <span data-count="1">l</span>ink_state else <span data-count="19">L</span>ink.empty_state in
+  let* m, (link_state : _ Link.state) =
+    Compile.File.until_lin<span data-count="20">k</span> ~unsafe ~rac ~srac:false ~name link_state
+      source_file
   in
-  <span data-count="34">(</span>)
-
-let cmd ~unsafe ~rac ~optimize ~files =
-  <span data-count="35">l</span>ist_iter (run_file ~unsafe ~rac ~optimize) files
+  <span data-count="20">l</span>et+ () =
+    Interpret.Concrete.modu<span data-count="20">l</span> ~timeout ~timeout_instr link_state.envs m
+  in
+  <span data-count="16">(</span>)
 </code></pre>
       </div>
     </div>

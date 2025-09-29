@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>synchronizer.ml &mdash; Coverage report</title>
-    <meta name="description" content="88.24% coverage in src/data_structures/synchronizer.ml">
+    <meta name="description" content="97.06% coverage in src/data_structures/synchronizer.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -15,13 +15,10 @@
           <span class="dirname">src/data_structures/</span>synchronizer.ml
         </a>
       </h1>
-      <h2>88.24%</h2>
+      <h2>97.06%</h2>
     </div>
     <div id="navbar">
       <span class="some-visited" style="top:40.62%"></span>
-      <span class="unvisited" style="bottom:17.19%"></span>
-      <span class="unvisited" style="bottom:15.62%"></span>
-      <span class="unvisited" style="bottom:12.50%"></span>
     </div>
     <div id="report">
       <div id="lines-layer">
@@ -78,10 +75,10 @@
 <a id="L50"></a><span class="visited"> </span>
 <a id="L51"></a><span > </span>
 <a id="L52"></a><span > </span>
-<a id="L53"></a><span class="unvisited"> </span>
-<a id="L54"></a><span class="unvisited"> </span>
+<a id="L53"></a><span class="visited"> </span>
+<a id="L54"></a><span class="visited"> </span>
 <a id="L55"></a><span > </span>
-<a id="L56"></a><span class="unvisited"> </span>
+<a id="L56"></a><span class="visited"> </span>
 <a id="L57"></a><span > </span>
 <a id="L58"></a><span > </span>
 <a id="L59"></a><span class="visited"> </span>
@@ -173,8 +170,8 @@ type ('get, 'write) t =
   }
 
 let init getter writter =
-  <span data-count="812">{</span> mutex = Mutex.creat<span data-count="812">e</span> ()
-  ; cond = Condition.creat<span data-count="812">e</span> ()
+  <span data-count="814">{</span> mutex = Mutex.creat<span data-count="814">e</span> ()
+  ; cond = Condition.creat<span data-count="814">e</span> ()
   ; getter
   ; writter
   ; pledges = 0
@@ -182,47 +179,47 @@ let init getter writter =
   }
 
 let get synchro pledge =
-  <span data-count="29136">l</span>et rec inner_loop synchro pledge =
-    <span data-count="30399">m</span>atch synchro.getter () with
-    | <span data-count="2367">N</span>one when synchro.pledges = <span data-count="1087">0</span> || synchro.close<span data-count="0">d</span> -&gt;
-      <span data-count="1087">C</span>ondition.broadcast synchro.cond;
-      <span data-count="1087">N</span>one
-    | <span data-count="1280">N</span>one -&gt;
+  <span data-count="29677">l</span>et rec inner_loop synchro pledge =
+    <span data-count="31109">m</span>atch synchro.getter () with
+    | <span data-count="2520">N</span>one when synchro.pledges = <span data-count="1068">0</span> || synchro.close<span data-count="0">d</span> -&gt;
+      <span data-count="1068">C</span>ondition.broadcast synchro.cond;
+      <span data-count="1068">N</span>one
+    | <span data-count="1452">N</span>one -&gt;
       Condition.wait synchro.cond synchro.mutex;
-      <span data-count="1267">i</span>nner_loop synchro pledge
-    | <span data-count="28032">S</span>ome _ as v -&gt;
-      if pledge then <span data-count="27806">s</span>ynchro.pledges &lt;- synchro.pledges + 1;
-      <span data-count="28032">v</span>
+      <span data-count="1433">i</span>nner_loop synchro pledge
+    | <span data-count="28589">S</span>ome _ as v -&gt;
+      if pledge then <span data-count="28354">s</span>ynchro.pledges &lt;- synchro.pledges + 1;
+      <span data-count="28589">v</span>
   in
-  Mutex.protect synchro.mutex (fun () -&gt; <span data-count="29132">i</span>nner_loop synchro pledge)
+  Mutex.protect synchro.mutex (fun () -&gt; <span data-count="29675">i</span>nner_loop synchro pledge)
 
 let write v { writter; cond; mutex; _ } =
-  <span data-count="28069">M</span>utex.protect mutex (fun () -&gt; <span data-count="28073">w</span>ritter v cond)
+  <span data-count="28628">M</span>utex.protect mutex (fun () -&gt; <span data-count="28628">w</span>ritter v cond)
 
 let make_pledge synchro =
-  <span data-count="788">M</span>utex.lock synchro.mutex;
-  <span data-count="788">s</span>ynchro.pledges &lt;- synchro.pledges + 1;
+  <span data-count="789">M</span>utex.lock synchro.mutex;
+  <span data-count="789">s</span>ynchro.pledges &lt;- synchro.pledges + 1;
   Mutex.unlock synchro.mutex
 
 let end_pledge synchro =
-  <span data-count="28500">M</span>utex.lock synchro.mutex;
-  <span data-count="28500">s</span>ynchro.pledges &lt;- synchro.pledges - 1;
-  if Int.equal synchro.pledges 0 then <span data-count="23060">C</span>ondition.broadcas<span data-count="23060">t</span> synchro.cond;
-  <span data-count="28500">M</span>utex.unlock synchro.mutex
+  <span data-count="29023">M</span>utex.lock synchro.mutex;
+  <span data-count="29023">s</span>ynchro.pledges &lt;- synchro.pledges - 1;
+  if Int.equal synchro.pledges 0 then <span data-count="22980">C</span>ondition.broadcas<span data-count="22979">t</span> synchro.cond;
+  <span data-count="29022">M</span>utex.unlock synchro.mutex
 
 let fail q =
-  <span data-count="0">M</span>utex.lock q.mutex;
-  <span data-count="0">q</span>.closed &lt;- true;
+  <span data-count="1">M</span>utex.lock q.mutex;
+  <span data-count="1">q</span>.closed &lt;- true;
   Condition.broadcast q.cond;
-  <span data-count="0">M</span>utex.unlock q.mutex
+  <span data-count="1">M</span>utex.unlock q.mutex
 
 let rec work_while f q =
-  <span data-count="28553">m</span>atch get q true with
-  | <span data-count="730">N</span>one -&gt; ()
-  | <span data-count="27806">S</span>ome v -&gt;
-    let () = f v (fun v -&gt; <span data-count="27438">w</span>rite v q) in
-    <span data-count="27770">e</span>nd_pledge q;
-    <span data-count="27770">w</span>ork_while f q
+  <span data-count="29089">m</span>atch get q true with
+  | <span data-count="715">N</span>one -&gt; ()
+  | <span data-count="28354">S</span>ome v -&gt;
+    let () = f v (fun v -&gt; <span data-count="27984">w</span>rite v q) in
+    <span data-count="28307">e</span>nd_pledge q;
+    <span data-count="28306">w</span>ork_while f q
 </code></pre>
       </div>
     </div>
