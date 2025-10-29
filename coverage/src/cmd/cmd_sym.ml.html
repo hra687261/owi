@@ -83,23 +83,23 @@
 <a id="L38"></a><span > </span>
 <a id="L39"></a><span > </span>
 <a id="L40"></a><span class="visited"> </span>
-<a id="L41"></a><span class="visited"> </span>
-<a id="L42"></a><span class="visited"> </span>
-<a id="L43"></a><span class="visited"> </span>
+<a id="L41"></a><span > </span>
+<a id="L42"></a><span > </span>
+<a id="L43"></a><span > </span>
 <a id="L44"></a><span > </span>
 <a id="L45"></a><span > </span>
 <a id="L46"></a><span > </span>
 <a id="L47"></a><span > </span>
-<a id="L48"></a><span > </span>
+<a id="L48"></a><span class="visited"> </span>
 <a id="L49"></a><span > </span>
-<a id="L50"></a><span class="visited"> </span>
+<a id="L50"></a><span > </span>
 <a id="L51"></a><span > </span>
-<a id="L52"></a><span > </span>
+<a id="L52"></a><span class="visited"> </span>
 <a id="L53"></a><span > </span>
-<a id="L54"></a><span class="visited"> </span>
-<a id="L55"></a><span > </span>
-<a id="L56"></a><span > </span>
-<a id="L57"></a><span > </span>
+<a id="L54"></a><span > </span>
+<a id="L55"></a><span class="visited"> </span>
+<a id="L56"></a><span class="visited"> </span>
+<a id="L57"></a><span class="visited"> </span>
 <a id="L58"></a><span class="visited"> </span>
 <a id="L59"></a><span > </span>
 <a id="L60"></a><span class="visited"> </span>
@@ -678,23 +678,23 @@ type parameters =
 
 let run_file ~parameters ~source_file =
   <span data-count="406">l</span>et { unsafe; rac; srac; entry_point; invoke_with_symbols; _ } = parameters in
-  let* m = Compile.File.until_validat<span data-count="406">e</span> ~unsafe ~rac ~srac source_file in
-  <span data-count="405">l</span>et* m = Cmd_utils.set_entry_poin<span data-count="405">t</span> entry_point invoke_with_symbols m in
-  <span data-count="404">l</span>et link_state =
+  let link_state =
     let func_typ = Symbolic.Extern_func.extern_type in
     let link_state = Link.empty_state in
     let link_state =
       Link.extern_module' link_state ~name:"wasi_snapshot_preview1" ~func_typ
         Symbolic_wasm_ffi.wasi_snapshot_preview1
     in
-    <span data-count="404">l</span>et link_state =
+    <span data-count="406">l</span>et link_state =
       Link.extern_module' link_state ~name:"owi" ~func_typ
         Symbolic_wasm_ffi.symbolic_extern_module
     in
-    <span data-count="404">l</span>ink_state
+    <span data-count="406">l</span>ink_state
   in
 
-  let+ m, link_state =
+  let* m = Compile.File.until_binar<span data-count="406">y</span> ~unsafe ~rac ~srac source_file in
+  <span data-count="405">l</span>et* m = Cmd_utils.set_entry_poin<span data-count="405">t</span> entry_point invoke_with_symbols m in
+  <span data-count="404">l</span>et+ m, link_state =
     Compile.Binary.until_lin<span data-count="404">k</span> ~unsafe ~name:None link_state m
   in
   <span data-count="404">l</span>et m = Symbolic.convert_module_to_run m in
@@ -851,21 +851,21 @@ let handle_result ~exploration_strategy ~workers ~no_stop_at_failure ~no_value
   <span data-count="407">l</span>et res_stack = Ws.make () in
   <span data-count="407">l</span>et path_count = Atomic.make 0 in
   <span data-count="407">l</span>et callback v =
-    <span data-count="1701">l</span>et open Symbolic_choice_intf in
+    <span data-count="1650">l</span>et open Symbolic_choice_intf in
     Atomic.incr path_count;
-    <span data-count="1700">m</span>atch (fail_mode, v) with
-    | <span data-count="1463">_</span>, (EVal (), _) -&gt; ()
+    <span data-count="1649">m</span>atch (fail_mode, v) with
+    | <span data-count="1411">_</span>, (EVal (), _) -&gt; ()
     | <span data-count="172">(</span> (<span data-count="172">B</span>oth | <span data-count="0">T</span>rap_only)
       , (ETrap (t, m, labels, breadcrumbs, symbol_scopes), thread) ) -&gt;
       Ws.push
         (`ETrap (t, m, labels, breadcrumbs, symbol_scopes), thread)
         Prio.default res_stack
-    | <span data-count="63">(</span> (<span data-count="60">B</span>oth | <span data-count="3">A</span>ssertion_only)
+    | <span data-count="64">(</span> (<span data-count="61">B</span>oth | <span data-count="3">A</span>ssertion_only)
       , (EAssert (e, m, labels, breadcrumbs, symbol_scopes), thread) ) -&gt;
       Ws.push
         (`EAssert (e, m, labels, breadcrumbs, symbol_scopes), thread)
         Prio.default res_stack
-    | <span data-count="3">(</span><span data-count="0">T</span>rap_only | <span data-count="3">A</span>ssertion_only), _ -&gt; ()
+    | <span data-count="2">(</span><span data-count="0">T</span>rap_only | <span data-count="2">A</span>ssertion_only), _ -&gt; ()
   in
   let time_counter = Mtime_clock.counter () in
   <span data-count="407">l</span>et join_handles =
@@ -876,7 +876,7 @@ let handle_result ~exploration_strategy ~workers ~no_stop_at_failure ~no_value
       | <span data-count="0">R</span>andom -&gt; (module Wpq) )
       ~workers solver result thread ~callback
       ~callback_init:(fun () -&gt; <span data-count="789">W</span>s.make_pledge res_stack)
-      ~callback_end:(fun () -&gt; <span data-count="757">W</span>s.end_pledge res_stack)
+      ~callback_end:(fun () -&gt; <span data-count="762">W</span>s.end_pledge res_stack)
   in
   <span data-count="407">l</span>et results =
     Ws.read_as_seq res_stack ~finalizer:(fun () -&gt;
