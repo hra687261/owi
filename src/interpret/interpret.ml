@@ -8,7 +8,7 @@ open Types
 open Binary
 
 (* TODO: make this a CLI parameter *)
-let use_ite_for_select = true
+let use_ite_for_select = false
 
 module Make (P : Interpret_intf.P) :
   Interpret_intf.S
