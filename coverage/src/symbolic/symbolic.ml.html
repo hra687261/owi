@@ -343,23 +343,23 @@ module Memory = struct
 
   let load_8_s m a = <span data-count="567">C</span>hoice.lift_mem @@ load_8_<span data-count="567">s</span> m a
 
-  let load_8_u m a = <span data-count="3356">C</span>hoice.lift_mem @@ load_8_<span data-count="3355">u</span> m a
+  let load_8_u m a = <span data-count="3306">C</span>hoice.lift_mem @@ load_8_<span data-count="3304">u</span> m a
 
   let load_16_s m a = <span data-count="2">C</span>hoice.lift_mem @@ load_16_<span data-count="2">s</span> m a
 
   let load_16_u m a = <span data-count="2">C</span>hoice.lift_mem @@ load_16_<span data-count="2">u</span> m a
 
-  let load_32 m a = <span data-count="73804">C</span>hoice.lift_mem @@ load_3<span data-count="73798">2</span> m a
+  let load_32 m a = <span data-count="73819">C</span>hoice.lift_mem @@ load_3<span data-count="73810">2</span> m a
 
   let load_64 m a = <span data-count="79">C</span>hoice.lift_mem @@ load_6<span data-count="79">4</span> m a
 
-  let store_8 m ~addr v = <span data-count="3179">C</span>hoice.lift_mem @@ store_<span data-count="3179">8</span> m ~addr v
+  let store_8 m ~addr v = <span data-count="3143">C</span>hoice.lift_mem @@ store_<span data-count="3143">8</span> m ~addr v
 
   let store_16 m ~addr v = <span data-count="4">C</span>hoice.lift_mem @@ store_1<span data-count="4">6</span> m ~addr v
 
-  let store_32 m ~addr v = <span data-count="641035">C</span>hoice.lift_mem @@ store_3<span data-count="641030">2</span> m ~addr v
+  let store_32 m ~addr v = <span data-count="641049">C</span>hoice.lift_mem @@ store_3<span data-count="641041">2</span> m ~addr v
 
-  let store_64 m ~addr v = <span data-count="349770">C</span>hoice.lift_mem @@ store_6<span data-count="349767">4</span> m ~addr v
+  let store_64 m ~addr v = <span data-count="349770">C</span>hoice.lift_mem @@ store_6<span data-count="349769">4</span> m ~addr v
 
   let fill m ~pos ~len c = <span data-count="0">C</span>hoice.lift_mem @@ fil<span data-count="0">l</span> m ~pos ~len c
 
@@ -378,12 +378,12 @@ module Env = struct
   type t = Extern_func.extern_func Link_env.t
 
   let get_memory env id =
-    <span data-count="2156302">m</span>atch Link_env.get_memory env id with
+    <span data-count="2156175">m</span>atch Link_env.get_memory env id with
     | <span data-count="0">E</span>rror e -&gt; Choice.trap e
-    | <span data-count="2156297">O</span>k orig_mem -&gt;
+    | <span data-count="2156178">O</span>k orig_mem -&gt;
       let f (t : thread) =
-        <span data-count="2156296">l</span>et memories = Thread.memories t in
-        <span data-count="2156298">M</span>emory.get_memory (Link_env.i<span data-count="2156294">d</span> env) orig_mem memories id
+        <span data-count="2156167">l</span>et memories = Thread.memories t in
+        <span data-count="2156169">M</span>emory.get_memory (Link_env.i<span data-count="2156169">d</span> env) orig_mem memories id
       in
       Choice.with_thread f
 
@@ -397,7 +397,7 @@ module Env = struct
     | <span data-count="4040">O</span>k orig_table -&gt;
       let f (t : thread) =
         <span data-count="4040">l</span>et tables = Thread.tables t in
-        <span data-count="4040">S</span>ymbolic_table.get_table (Link_env.i<span data-count="4040">d</span> env) orig_table tables i
+        <span data-count="4041">S</span>ymbolic_table.get_table (Link_env.i<span data-count="4041">d</span> env) orig_table tables i
       in
       Choice.with_thread f
 
@@ -409,12 +409,12 @@ module Env = struct
     | <span data-count="404">O</span>k orig_data -&gt; Choice.return orig_data
 
   let get_global (env : t) i : Global.t Choice.t =
-    <span data-count="2157">m</span>atch Link_env.get_global env i with
+    <span data-count="2047">m</span>atch Link_env.get_global env i with
     | <span data-count="0">E</span>rror e -&gt; Choice.trap e
-    | <span data-count="2157">O</span>k orig_global -&gt;
+    | <span data-count="2046">O</span>k orig_global -&gt;
       let f (t : thread) =
-        <span data-count="2157">l</span>et globals = Thread.globals t in
-        <span data-count="2157">S</span>ymbolic_global.get_global (Link_env.i<span data-count="2157">d</span> env) orig_global globals i
+        <span data-count="2047">l</span>et globals = Thread.globals t in
+        <span data-count="2047">S</span>ymbolic_global.get_global (Link_env.i<span data-count="2047">d</span> env) orig_global globals i
       in
       Choice.with_thread f
 
