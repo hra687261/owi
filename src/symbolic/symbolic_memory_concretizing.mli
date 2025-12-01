@@ -74,6 +74,7 @@ val fill :
 val blit :
      t
   -> src:Smtml.Expr.t
+  -> t
   -> dst:Smtml.Expr.t
   -> len:Smtml.Expr.t
   -> unit Symbolic_choice_without_memory.t

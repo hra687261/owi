@@ -65,7 +65,7 @@ module Memory = struct
 
   let fill m ~pos ~len c = Choice.lift_mem @@ fill m ~pos ~len c
 
-  let blit m ~src ~dst ~len = Choice.lift_mem @@ blit m ~src ~dst ~len
+  let blit m1 ~src m2 ~dst ~len = Choice.lift_mem @@ blit m1 ~src m2 ~dst ~len
 end
 
 module Data = struct

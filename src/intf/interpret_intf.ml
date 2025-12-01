@@ -68,6 +68,7 @@ module type P = sig
     val blit :
          t
       -> src:Value.int32
+      -> t
       -> dst:Value.int32
       -> len:Value.int32
       -> unit Choice.t
