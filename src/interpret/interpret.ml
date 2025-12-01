@@ -1016,7 +1016,6 @@ module Make (P : Interpret_intf.P) = struct
       in
       if out_of_bounds then Choice.trap `Out_of_bounds_memory_access
       else begin
-        (* Is this necessary? *)
         let* mem1 = Env.get_memory env memid1 in
         let* mem2 = Env.get_memory env memid2 in
         let* () = Memory.blit mem1 ~src mem2 ~dst ~len in
