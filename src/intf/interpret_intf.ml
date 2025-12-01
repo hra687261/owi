@@ -66,10 +66,10 @@ module type P = sig
     val fill : t -> pos:Value.int32 -> len:Value.int32 -> char -> unit Choice.t
 
     val blit :
-         t
-      -> src:Value.int32
-      -> t
-      -> dst:Value.int32
+         src:t
+      -> src_idx:Value.int32
+      -> dst:t
+      -> dst_idx:Value.int32
       -> len:Value.int32
       -> unit Choice.t
 
