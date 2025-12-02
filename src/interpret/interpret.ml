@@ -550,8 +550,6 @@ module Make (P : Interpret_intf.P) = struct
      fun stack ty f ->
       match ty with
       | Mem (memid, args) ->
-        let* memid, stack = pop_arg stack memid in
-        let memid = Value.const_i32_ext memid in
         let* mem = Env.get_memory env (Int32.to_int memid) in
         apply stack args (f mem)
       | Arg (arg, args) ->

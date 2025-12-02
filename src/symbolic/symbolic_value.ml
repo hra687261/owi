@@ -48,12 +48,6 @@ type t =
 
 let const_i32 (i : Int32.t) : int32 = value (Bitv (Smtml.Bitvector.of_int32 i))
 
-let const_i32_ext (i : int32) : Int32.t =
-  match Expr.view i with
-  | Val (Value.Bitv bv) when Bitvector.numbits bv = 32 ->
-    Z.to_int32 (Bitvector.view bv)
-  | _ -> Fmt.failwith "expected a constant i32, instead got %a" Expr.pp i
-
 let const_i64 (i : Int64.t) : int64 = value (Bitv (Smtml.Bitvector.of_int64 i))
 
 let const_f32 (f : Float32.t) : float32 = value (Num (F32 (Float32.to_bits f)))

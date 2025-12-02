@@ -202,8 +202,6 @@ module type T = sig
 
   val const_i32 : Int32.t -> int32
 
-  val const_i32_ext : int32 -> Int32.t
-
   val const_i64 : Int64.t -> int64
 
   val const_f32 : Float32.t -> float32
