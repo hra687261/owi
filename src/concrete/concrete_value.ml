@@ -26,6 +26,8 @@ let pp_v128 = V128.pp
 
 let const_i32 x = x
 
+let const_i32_ext x = x
+
 let const_i64 x = x
 
 let const_f32 x = x
