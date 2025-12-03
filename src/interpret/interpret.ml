@@ -994,15 +994,15 @@ module Make (P : Interpret_intf.P) = struct
         let* mem = Env.get_memory env memid in
         let* () = Memory.fill mem ~pos ~len c in
         st stack
-    | Memory_copy (memid1, memid2) ->
+    | Memory_copy (dstmemid, srcmemid) ->
       let len, stack = Stack.pop_i32 stack in
       let src_idx, stack = Stack.pop_i32 stack in
       let dst_idx, stack = Stack.pop_i32 stack in
-      let* mem1 = Env.get_memory env memid1 in
-      let* mem2 = Env.get_memory env memid2 in
+      let* srcmem = Env.get_memory env srcmemid in
+      let* dstmem = Env.get_memory env dstmemid in
       let> out_of_bounds =
-        let size1 = I64.extend_i32_u (Memory.size mem1) in
-        let size2 = I64.extend_i32_u (Memory.size mem2) in
+        let size1 = I64.extend_i32_u (Memory.size srcmem) in
+        let size2 = I64.extend_i32_u (Memory.size dstmem) in
         let len = I64.extend_i32_u len in
         let src_idx = I64.extend_i32_u src_idx in
         let dst_idx = I64.extend_i32_u dst_idx in
@@ -1012,9 +1012,9 @@ module Make (P : Interpret_intf.P) = struct
       in
       if out_of_bounds then Choice.trap `Out_of_bounds_memory_access
       else begin
-        let* mem1 = Env.get_memory env memid1 in
-        let* mem2 = Env.get_memory env memid2 in
-        let* () = Memory.blit ~src:mem1 ~src_idx ~dst:mem2 ~dst_idx ~len in
+        let* srcmem = Env.get_memory env srcmemid in
+        let* dstmem = Env.get_memory env dstmemid in
+        let* () = Memory.blit ~src:srcmem ~src_idx ~dst:dstmem ~dst_idx ~len in
         st stack
       end
     | Memory_init (memid, dataid) ->
