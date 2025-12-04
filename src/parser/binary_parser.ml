@@ -72,15 +72,13 @@ let read_byte ~msg input =
     (c, next_input)
 
 (* https://en.wikipedia.org/wiki/LEB128#Unsigned_LEB128 *)
-let read_UN n input =
+let read_UN ?(msg2 = "integer representation too long (read_UN 2)") n input =
   let rec aux n input =
     let* () =
       if n <= 0 then parse_fail "integer representation too long (read_UN 1)"
       else Ok ()
     in
-    let* b, input =
-      read_byte ~msg:"integer representation too long (read_UN 2)" input
-    in
+    let* b, input = read_byte ~msg:msg2 input in
     let b = Char.code b in
     let* () =
       if n >= 7 || b land 0x7f < 1 lsl n then Ok ()
@@ -95,8 +93,8 @@ let read_UN n input =
   in
   aux n input
 
-let read_U32 input =
-  let+ i64, input = read_UN 32 input in
+let read_U32 ?msg2 input =
+  let+ i64, input = read_UN ?msg2 32 input in
   (Int64.to_int i64, input)
 
 (* https://en.wikipedia.org/wiki/LEB128#Signed_LEB128 *)
@@ -107,7 +105,7 @@ let read_SN n input =
       else Ok ()
     in
     let* b, input =
-      read_byte ~msg:"integer representation too long (read_SN 2)" input
+      read_byte ~msg:"unexpected end of section or function" input
     in
     let b = Char.code b in
     let mask = (-1 lsl (n - 1)) land 0x7f in
@@ -182,8 +180,8 @@ let read_F64 input =
   let i64 = Int64.logor i64 i1 in
   (Float64.of_bits i64, input)
 
-let vector parse_elt input =
-  let* nb_elt, input = read_U32 input in
+let vector ?msg2 parse_elt input =
+  let* nb_elt, input = read_U32 ?msg2 input in
   let rec loop loop_id input acc =
     if nb_elt = loop_id then Ok (List.rev acc, input)
     else
@@ -193,24 +191,29 @@ let vector parse_elt input =
   in
   loop 0 input []
 
-let vector_no_id f input = vector (fun _id -> f) input
+let vector_no_id ?msg2 f input = vector ?msg2 (fun _id -> f) input
 
-let check_end_opcode ?unexpected_eoi_msg input =
-  let msg = Option.value unexpected_eoi_msg ~default:"END opcode expected" in
-  match read_byte ~msg input with
+let check_end_opcode ?(msg = "illegal opcode %s") input =
+  match
+    read_byte
+      ~msg:
+        (Fmt.str "%s\n\n%s" msg
+           (Printexc.raw_backtrace_to_string @@ Printexc.get_callstack 100) )
+      input
+  with
   | Ok ('\x0B', input) -> Ok input
   | Ok (c, _input) ->
     parse_fail "END opcode expected (got %s instead)" (Char.escaped c)
   | Error _ as e -> e
 
 let check_zero_opcode input =
-  let msg = "zero byte expected" in
+  let msg = "data count section required" in
   match read_byte ~msg input with
   | Ok ('\x00', input) -> Ok input
-  | Ok (c, _input) -> parse_fail "%s (got %s instead)" msg (Char.escaped c)
+  | Ok (_c, _input) -> parse_fail "%s" msg
   | Error _ as e -> e
 
-let read_bytes ~msg input = vector_no_id (read_byte ~msg) input
+let read_bytes ~msg ?msg2 input = vector_no_id ?msg2 (read_byte ~msg) input
 
 let read_indice input : (indice * Input.t, _) result =
   let+ indice, input = read_U32 input in
@@ -262,7 +265,8 @@ let read_mut input =
   | _c -> parse_fail "malformed mutability"
 
 let read_limits input =
-  let* b, input = read_byte ~msg:"read_limits" input in
+  let msg = "unexpected end of section or function" in
+  let* b, input = read_byte ~msg input in
   match b with
   | '\x00' ->
     let+ min, input = read_U32 input in
@@ -271,7 +275,8 @@ let read_limits input =
     let* min, input = read_U32 input in
     let+ max, input = read_U32 input in
     ({ Text.min; max = Some max }, input)
-  | _c -> parse_fail "integer too large (read_limits)"
+  | '\x02' -> parse_fail "integer too large"
+  | _c -> parse_fail "integer representation too long"
 
 (* There are some differences between what is done here and the docs:
     https://webassembly.github.io/spec/core/binary/instructions.html#memory-instructions
@@ -288,17 +293,22 @@ let read_memarg max_align input =
   let* align_64, input = read_UN 32 input in
   let align = Int64.to_int32 align_64 in
   let has_memidx = Int32.ne (Int32.logand align 0x40l) 0l in
+  (* Fmt.pf Fmt.stderr "read_memarg has_memidx: %b; align = %ld@." has_memidx align; *)
   (* Is the 6th bit set? *)
   let* memidx, align, input =
     if has_memidx then
       let+ memidx, input = read_indice input in
+      (* Fmt.pf Fmt.stderr "read_memarg memidx: %d@." memidx; *)
       (* Unset the 6th bit *)
       (memidx, Int32.logand align (Int32.lognot 0x40l), input)
     else Ok (0, align, input)
   in
+  (* Fmt.pf Fmt.stderr "read_memarg memidx: %d; align: %ld@." memidx align; *)
   if Int32.to_int align >= max_align then parse_fail "malformed memop flags"
   else
     let+ offset, input = read_U32 input in
+    (* Fmt.pf Fmt.stderr "read_memarg memidx: %d; align: %ld; offset: %d@." memidx
+      align offset; *)
     let offset = Int32.of_int offset in
     (memidx, { Text.align; offset }, input)
 
@@ -389,6 +399,8 @@ let read_block_type types input =
       Ok (Bt_raw (None, (pt, rt)), input)
   end
 
+(* When only one memory is used, memory operation should make sure that the
+memory id is zero! *)
 let rec read_instr types input =
   let* b, input = read_byte ~msg:"read_instr" input in
   match b with
@@ -397,7 +409,7 @@ let rec read_instr types input =
   | '\x02' ->
     let* bt, input = read_block_type types input in
     let* expr, input = read_expr types input in
-    let+ input = check_end_opcode input in
+    let+ input = check_end_opcode ~msg:"unexpected end" input in
     (Block (None, Some bt, expr), input)
   | '\x03' ->
     let* bt, input = read_block_type types input in
@@ -479,6 +491,7 @@ let rec read_instr types input =
   | '\x28' ->
     let+ idx, memarg, input = read_memarg 32 input in
     (I_load (idx, S32, memarg), input)
+    (* For each memid, when there is only 1 memory, check that it is zero *)
   | '\x29' ->
     let+ idx, memarg, input = read_memarg 64 input in
     (I_load (idx, S64, memarg), input)
@@ -715,9 +728,9 @@ and read_expr types input =
   in
   aux [] input
 
-let read_const types input =
+let read_const ?msg types input =
   let* c, input = read_expr types input in
-  let+ input = check_end_opcode input in
+  let+ input = check_end_opcode input ?msg in
   (c, input)
 
 type import =
@@ -770,7 +783,9 @@ let section_parse input ~expected_id default section_content_parse =
 
 let parse_utf8_name input =
   let* () =
-    if Input.size input = 0 then parse_fail "unexpected end" else Ok ()
+    if Input.size input = 0 then
+      parse_fail "unexpected end of section or function"
+    else Ok ()
   in
   let* name, input = read_bytes ~msg:"parse_utf8_name" input in
   let name = string_of_char_list name in
@@ -838,10 +853,10 @@ let read_global types input =
   let+ init, input = read_const types input in
   ({ Global.typ; init; id = None }, input)
 
-let read_export input =
-  let* name, input = read_bytes ~msg:"read_export 1" input in
+let read_export ?(msg1 = "read_export 1") ?(msg2 = "read_export 2") input =
+  let* name, input = read_bytes ~msg:msg1 ~msg2:"length out of bounds" input in
   let name = string_of_char_list name in
-  let* export_typeidx, input = read_byte ~msg:"read_export 2" input in
+  let* export_typeidx, input = read_byte ~msg:msg2 input in
   let+ id, input = read_U32 input in
   ((export_typeidx, { Export.id; name }), input)
 
@@ -851,7 +866,7 @@ let read_elem_active types input =
   (Elem.Mode.Active (Some index, offset), input)
 
 let read_elem_active_zero types input =
-  let+ offset, input = read_const types input in
+  let+ offset, input = read_const ~msg:"unexpected end" types input in
   (Elem.Mode.Active (Some 0, offset), input)
 
 let read_elem_index input =
@@ -867,7 +882,7 @@ let read_elem_kind input =
   | Error _ as e -> e
 
 let read_element types input =
-  let* i, input = read_U32 input in
+  let* i, input = read_U32 ~msg2:"unexpected end" input in
   let id = None in
   match i with
   | 0 ->
@@ -942,14 +957,11 @@ let read_code types input =
   let* locals, code_input = read_locals code_input in
   let* code, code_input = read_expr types code_input in
   let* () =
-    if Input.size code_input = 0 && Input.size next_input = 0 then
-      parse_fail "unexpected end of section or function"
+    if Input.size next_input = 0 && Input.size code_input = 0 then
+      parse_fail "section size mismatch"
     else Ok ()
   in
-  let* code_input =
-    check_end_opcode ~unexpected_eoi_msg:"unexpected end of section or function"
-      code_input
-  in
+  let* code_input = check_end_opcode ~msg:"END opcode expected" code_input in
   if Input.size code_input > 0 then
     parse_fail "unexpected end of section or function"
   else Ok ((locals, code), next_input)
@@ -965,12 +977,16 @@ let read_data_active_zero types input =
   (Data.Mode.Active (0, offset), input)
 
 let read_data types input =
-  let* i, input = read_U32 input in
+  let* i, input =
+    read_U32 ~msg2:"unexpected end of section or function" input
+  in
   let id = None in
   match i with
   | 0 ->
     let* mode, input = read_data_active_zero types input in
-    let+ init, input = read_bytes ~msg:"read_data 0" input in
+    let+ init, input =
+      read_bytes ~msg:"unexpected end of section or function" input
+    in
     let init = string_of_char_list init in
     ({ Data.id; init; mode }, input)
   | 1 ->
@@ -1019,7 +1035,8 @@ let sections_iterate (input : Input.t) =
 
   (* Function *)
   let* function_section, input =
-    section_parse input ~expected_id:'\x03' [] (vector_no_id read_U32)
+    section_parse input ~expected_id:'\x03' []
+      (vector_no_id (fun i -> read_U32 i))
   in
 
   (* Custom *)
@@ -1056,7 +1073,9 @@ let sections_iterate (input : Input.t) =
 
   (* Exports *)
   let* export_section, input =
-    section_parse input ~expected_id:'\x07' [] (vector_no_id read_export)
+    (* here *)
+    section_parse input ~expected_id:'\x07' []
+      (vector_no_id (fun i -> read_export i))
   in
 
   (* Custom *)
@@ -1101,8 +1120,13 @@ let sections_iterate (input : Input.t) =
   in
 
   let* () =
+    (* if List.compare_lengths function_section code_section > 0 then
+      parse_fail "unexpected content after last section"
+    else  *)
     if List.compare_lengths function_section code_section <> 0 then
-      parse_fail "function and code section have inconsistent lengths"
+      parse_fail "function and code section have inconsistent lengths %d %d"
+        (List.length function_section)
+        (List.length code_section)
     else Ok ()
   in
 
@@ -1112,7 +1136,8 @@ let sections_iterate (input : Input.t) =
 
   (* Data *)
   let+ data, input =
-    section_parse input ~expected_id:'\x0B' [] (vector_no_id (read_data types))
+    section_parse input ~expected_id:'\x0B' []
+      (vector_no_id ~msg2:"unexpected end" (read_data types))
   in
 
   let data = Array.of_list data in
