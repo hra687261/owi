@@ -34,8 +34,8 @@
 <a id="L8"></a><span > </span>
 <a id="L9"></a><span class="visited"> </span>
 <a id="L10"></a><span > </span>
-<a id="L11"></a><span class="visited"> </span>
-<a id="L12"></a><span > </span>
+<a id="L11"></a><span > </span>
+<a id="L12"></a><span class="visited"> </span>
 <a id="L13"></a><span > </span>
 <a id="L14"></a><span > </span>
 <a id="L15"></a><span class="visited"> </span>
@@ -135,50 +135,50 @@
 
 type t = { mutable value : Symbolic_value.t }
 
-let value v = <span data-count="321">v</span>.value
+let value v = <span data-count="333">v</span>.value
 
-let set_value v x = <span data-count="1727">v</span>.value &lt;- x
+let set_value v x = <span data-count="1972">v</span>.value &lt;- x
 
-let clone_global r = <span data-count="27344">{</span> value = r.value }
+(* WARNING: because we are doing an optimization in `Symbolic_choice`, the cloned state should not refer to a mutable value of the previous state. Assuming that the original state is not mutated is wrong. *)
+let clone_global r = <span data-count="13578">{</span> value = r.value }
 
 let convert_values (v : Concrete_value.t) : Symbolic_value.t =
-  (* TODO share various versions *)
-  <span data-count="192">m</span>atch v with
-  | <span data-count="189">I</span>32 v -&gt; I32 (Symbolic_value.const_i3<span data-count="189">2</span> v)
-  | <span data-count="1">I</span>64 v -&gt; I64 (Symbolic_value.const_i6<span data-count="1">4</span> v)
-  | <span data-count="1">F</span>32 v -&gt; F32 (Symbolic_value.const_f3<span data-count="1">2</span> v)
-  | <span data-count="1">F</span>64 v -&gt; F64 (Symbolic_value.const_f6<span data-count="1">4</span> v)
-  | <span data-count="0">V</span>128 v -&gt; V128 (Symbolic_value.const_v12<span data-count="0">8</span> v)
-  | <span data-count="0">R</span>ef (Funcref f) -&gt; Ref (Funcref f)
+  <span data-count="204">m</span>atch v with
+  | <span data-count="192">I</span>32 v -&gt; I32 (Symbolic_value.I32.of_concret<span data-count="192">e</span> v)
+  | <span data-count="4">I</span>64 v -&gt; I64 (Symbolic_value.I64.of_concret<span data-count="4">e</span> v)
+  | <span data-count="4">F</span>32 v -&gt; F32 (Symbolic_value.F32.of_concret<span data-count="4">e</span> v)
+  | <span data-count="4">F</span>64 v -&gt; F64 (Symbolic_value.F64.of_concret<span data-count="4">e</span> v)
+  | <span data-count="0">V</span>128 v -&gt; V128 (Symbolic_value.V128.of_concret<span data-count="0">e</span> v)
+  | <span data-count="0">R</span>ef (Func f) -&gt; Ref (Func f)
   | Ref _ -&gt; assert false
 
 let convert (orig_global : Concrete_global.t) : t =
-  <span data-count="192">l</span>et value = convert_values orig_global.value in
-  <span data-count="192">{</span> value }
+  <span data-count="204">l</span>et value = convert_values orig_global.value in
+  <span data-count="204">{</span> value }
 
 (** Collections of globals *)
 
 type collection = (int * int, t) Hashtbl.t
 
-let init () = <span data-count="28621">H</span>ashtbl.create 16
+let init () = <span data-count="14335">H</span>ashtbl.create 16
 
 let clone collection =
-  <span data-count="28221">l</span>et collection' = init () in
-  <span data-count="28221">H</span>ashtbl.iter
+  <span data-count="13929">l</span>et collection' = init () in
+  <span data-count="13928">H</span>ashtbl.iter
     (fun loc global -&gt;
-      <span data-count="27345">l</span>et global' = clone_global global in
-      <span data-count="27345">H</span>ashtbl.add collection' loc global' )
+      <span data-count="13577">l</span>et global' = clone_global global in
+      <span data-count="13578">H</span>ashtbl.add collection' loc global' )
     collection;
-  <span data-count="28221">c</span>ollection'
+  <span data-count="13928">c</span>ollection'
 
 let get_global env_id (orig_global : Concrete_global.t) collection g_id =
-  <span data-count="2048">l</span>et loc = (env_id, g_id) in
+  <span data-count="2305">l</span>et loc = (env_id, g_id) in
   match Hashtbl.find_opt collection loc with
-  | <span data-count="192">N</span>one -&gt;
+  | <span data-count="204">N</span>one -&gt;
     let g = convert orig_global in
-    <span data-count="192">H</span>ashtbl.add collection loc g;
-    <span data-count="192">g</span>
-  | <span data-count="1856">S</span>ome t -&gt; t
+    <span data-count="204">H</span>ashtbl.add collection loc g;
+    <span data-count="204">g</span>
+  | <span data-count="2101">S</span>ome t -&gt; t
 </code></pre>
       </div>
     </div>

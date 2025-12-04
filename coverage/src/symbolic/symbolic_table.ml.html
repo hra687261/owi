@@ -18,18 +18,18 @@
       <h2>61.76%</h2>
     </div>
     <div id="navbar">
-      <span class="unvisited" style="top:31.08%"></span>
-      <span class="unvisited" style="top:35.14%"></span>
+      <span class="unvisited" style="top:32.43%"></span>
       <span class="unvisited" style="top:36.49%"></span>
       <span class="unvisited" style="top:37.84%"></span>
       <span class="unvisited" style="top:39.19%"></span>
-      <span class="unvisited" style="top:43.24%"></span>
+      <span class="unvisited" style="top:40.54%"></span>
       <span class="unvisited" style="top:44.59%"></span>
       <span class="unvisited" style="top:45.95%"></span>
-      <span class="unvisited" style="top:50.00%"></span>
+      <span class="unvisited" style="top:47.30%"></span>
       <span class="unvisited" style="bottom:48.65%"></span>
       <span class="unvisited" style="bottom:47.30%"></span>
       <span class="unvisited" style="bottom:45.95%"></span>
+      <span class="unvisited" style="bottom:44.59%"></span>
     </div>
     <div id="report">
       <div id="lines-layer">
@@ -46,35 +46,35 @@
 <a id="L10"></a><span > </span>
 <a id="L11"></a><span > </span>
 <a id="L12"></a><span > </span>
-<a id="L13"></a><span class="visited"> </span>
-<a id="L14"></a><span > </span>
-<a id="L15"></a><span class="visited"> </span>
-<a id="L16"></a><span > </span>
-<a id="L17"></a><span class="visited"> </span>
-<a id="L18"></a><span > </span>
-<a id="L19"></a><span class="visited"> </span>
-<a id="L20"></a><span > </span>
-<a id="L21"></a><span class="visited"> </span>
-<a id="L22"></a><span > </span>
-<a id="L23"></a><span class="unvisited"> </span>
-<a id="L24"></a><span > </span>
+<a id="L13"></a><span > </span>
+<a id="L14"></a><span class="visited"> </span>
+<a id="L15"></a><span > </span>
+<a id="L16"></a><span class="visited"> </span>
+<a id="L17"></a><span > </span>
+<a id="L18"></a><span class="visited"> </span>
+<a id="L19"></a><span > </span>
+<a id="L20"></a><span class="visited"> </span>
+<a id="L21"></a><span > </span>
+<a id="L22"></a><span class="visited"> </span>
+<a id="L23"></a><span > </span>
+<a id="L24"></a><span class="unvisited"> </span>
 <a id="L25"></a><span > </span>
-<a id="L26"></a><span class="unvisited"> </span>
+<a id="L26"></a><span > </span>
 <a id="L27"></a><span class="unvisited"> </span>
 <a id="L28"></a><span class="unvisited"> </span>
 <a id="L29"></a><span class="unvisited"> </span>
-<a id="L30"></a><span > </span>
+<a id="L30"></a><span class="unvisited"> </span>
 <a id="L31"></a><span > </span>
-<a id="L32"></a><span class="unvisited"> </span>
+<a id="L32"></a><span > </span>
 <a id="L33"></a><span class="unvisited"> </span>
 <a id="L34"></a><span class="unvisited"> </span>
-<a id="L35"></a><span > </span>
+<a id="L35"></a><span class="unvisited"> </span>
 <a id="L36"></a><span > </span>
-<a id="L37"></a><span class="unvisited"> </span>
+<a id="L37"></a><span > </span>
 <a id="L38"></a><span class="unvisited"> </span>
 <a id="L39"></a><span class="unvisited"> </span>
 <a id="L40"></a><span class="unvisited"> </span>
-<a id="L41"></a><span > </span>
+<a id="L41"></a><span class="unvisited"> </span>
 <a id="L42"></a><span > </span>
 <a id="L43"></a><span > </span>
 <a id="L44"></a><span class="visited"> </span>
@@ -194,20 +194,21 @@
 (** Single table *)
 
 type t =
-  { mutable data : Symbolic_value.ref_value array
+  { mutable data : Symbolic_value.Ref.t array
   ; limits : Text.limits
   ; typ : Text.ref_type
   }
 
-let clone_table { limits; data; typ } = <span data-count="5056">{</span> typ; limits; data = Array.cop<span data-count="5056">y</span> data }
+(* WARNING: because we are doing an optimization in `Symbolic_choice`, the cloned state should not refer to a mutable value of the previous state. Assuming that the original state is not mutated is wrong. *)
+let clone_table { limits; data; typ } = <span data-count="2229">{</span> typ; limits; data = Array.cop<span data-count="2230">y</span> data }
 
-let get t i = <span data-count="3880">t</span>.data.(i)
+let get t i = <span data-count="3890">t</span>.data.(i)
 
 let set t i v = <span data-count="610">t</span>.data.(i) &lt;- v
 
-let size t = <span data-count="4043">A</span>rray.length t.data
+let size t = <span data-count="4053">A</span>rray.length t.data
 
-let typ t = <span data-count="3875">t</span>.typ
+let typ t = <span data-count="3885">t</span>.typ
 
 let max_size t = <span data-count="0">t</span>.limits.max
 
@@ -228,9 +229,8 @@ let copy ~t_src ~t_dst ~src ~dst ~len =
   <span data-count="0">l</span>et len = Int32.to_int len in
   <span data-count="0">A</span>rray.blit t_src.data src t_dst.data dst len
 
-let convert_ref_values (v : Concrete_value.ref_value) : Symbolic_value.ref_value
-    =
-  <span data-count="775">m</span>atch v with <span data-count="775">F</span>uncref f -&gt; Funcref f | _ -&gt; assert false
+let convert_ref_values (v : Concrete_value.Ref.t) : Symbolic_value.Ref.t =
+  <span data-count="775">m</span>atch v with <span data-count="775">F</span>unc f -&gt; Func f | _ -&gt; assert false
 
 let convert (orig_table : Concrete_table.t) =
   <span data-count="167">{</span> data = Array.ma<span data-count="167">p</span> convert_ref_values orig_table.data
@@ -242,25 +242,25 @@ let convert (orig_table : Concrete_table.t) =
 
 type collection = (int * int, t) Hashtbl.t
 
-let init () = <span data-count="28624">H</span>ashtbl.create 16
+let init () = <span data-count="14334">H</span>ashtbl.create 16
 
 let clone collection =
-  <span data-count="28224">l</span>et collection' = init () in
-  <span data-count="28223">H</span>ashtbl.iter
+  <span data-count="13927">l</span>et collection' = init () in
+  <span data-count="13926">H</span>ashtbl.iter
     (fun loc table -&gt;
-      <span data-count="5056">l</span>et table' = clone_table table in
-      <span data-count="5056">H</span>ashtbl.add collection' loc table' )
+      <span data-count="2229">l</span>et table' = clone_table table in
+      <span data-count="2230">H</span>ashtbl.add collection' loc table' )
     collection;
-  <span data-count="28223">c</span>ollection'
+  <span data-count="13930">c</span>ollection'
 
 let get_table env_id (orig_table : Concrete_table.t) collection g_id =
-  <span data-count="4043">l</span>et loc = (env_id, g_id) in
+  <span data-count="4053">l</span>et loc = (env_id, g_id) in
   match Hashtbl.find_opt collection loc with
   | <span data-count="167">N</span>one -&gt;
     let g = convert orig_table in
     <span data-count="167">H</span>ashtbl.add collection loc g;
     <span data-count="167">g</span>
-  | <span data-count="3876">S</span>ome t -&gt; t
+  | <span data-count="3886">S</span>ome t -&gt; t
 </code></pre>
       </div>
     </div>
