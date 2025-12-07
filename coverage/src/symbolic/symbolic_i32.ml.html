@@ -349,62 +349,62 @@ open Smtml.Expr
 
 let ty = Smtml.Ty.Ty_bitv 32
 
-let of_concrete (i : Int32.t) : t = <span data-count="3311743">v</span>alue (Bitv (Smtml.Bitvector.of_int3<span data-count="3311703">2</span> i))
+let of_concrete (i : Int32.t) : t = <span data-count="3310501">v</span>alue (Bitv (Smtml.Bitvector.of_int3<span data-count="3310471">2</span> i))
 
-let of_int (i : int) : t = <span data-count="52862">o</span>f_concrete (Int32.of_in<span data-count="52862">t</span> i)
+let of_int (i : int) : t = <span data-count="52687">o</span>f_concrete (Int32.of_in<span data-count="52687">t</span> i)
 
 let to_bool (e : t) : Symbolic_boolean.t =
-  <span data-count="339806">m</span>atch view e with
-  | <span data-count="315831">V</span>al (Bitv bv) -&gt;
-    if Smtml.Bitvector.eqz bv then <span data-count="111658">S</span>ymbolic_boolean.false_
-    else <span data-count="204172">S</span>ymbolic_boolean.true_
-  | <span data-count="2488">P</span>tr _ -&gt; Symbolic_boolean.true_
+  <span data-count="339652">m</span>atch view e with
+  | <span data-count="315667">V</span>al (Bitv bv) -&gt;
+    if Smtml.Bitvector.eqz bv then <span data-count="111573">S</span>ymbolic_boolean.false_
+    else <span data-count="204095">S</span>ymbolic_boolean.true_
+  | <span data-count="2478">P</span>tr _ -&gt; Symbolic_boolean.true_
   | <span data-count="0">S</span>ymbol { ty = Ty_bool; _ } -&gt; e
-  | <span data-count="20778">C</span>vtop (_, OfBool, cond) -&gt; cond
+  | <span data-count="20797">C</span>vtop (_, OfBool, cond) -&gt; cond
   | <span data-count="709">_</span> -&gt; cvtop ty ToBool e
 
 let zero = of_concret<span data-count="707">e</span> 0l
 
-let clz e = <span data-count="9920">u</span>nop ty Clz e
+let clz e = <span data-count="9919">u</span>nop ty Clz e
 
 let ctz e = <span data-count="0">u</span>nop ty Ctz e
 
 let popcnt e = <span data-count="0">u</span>nop ty Popcnt e
 
-let add e1 e2 = <span data-count="1048617">b</span>inop ty Add e1 e2
+let add e1 e2 = <span data-count="1047822">b</span>inop ty Add e1 e2
 
-let sub e1 e2 = <span data-count="11496">b</span>inop ty Sub e1 e2
+let sub e1 e2 = <span data-count="11494">b</span>inop ty Sub e1 e2
 
-let mul e1 e2 = <span data-count="1074127">b</span>inop ty Mul e1 e2
+let mul e1 e2 = <span data-count="1074006">b</span>inop ty Mul e1 e2
 
-let div e1 e2 = <span data-count="22">b</span>inop ty Div e1 e2
+let div e1 e2 = <span data-count="20">b</span>inop ty Div e1 e2
 
 let unsigned_div e1 e2 = <span data-count="9">b</span>inop ty DivU e1 e2
 
 let rem e1 e2 = <span data-count="3">b</span>inop ty Rem e1 e2
 
-let unsigned_rem e1 e2 = <span data-count="80006">b</span>inop ty RemU e1 e2
+let unsigned_rem e1 e2 = <span data-count="79974">b</span>inop ty RemU e1 e2
 
 let boolify e =
-  <span data-count="39516">m</span>atch view e with
-  | <span data-count="30336">V</span>al (Bitv bv) when Smtml.Bitvector.eq<span data-count="30336">z</span> bv -&gt; <span data-count="189">S</span>ome Symbolic_boolean.false_
-  | <span data-count="30147">V</span>al (Bitv bv) when Smtml.Bitvector.eq_on<span data-count="30147">e</span> bv -&gt; <span data-count="347">S</span>ome Symbolic_boolean.true_
-  | <span data-count="515">C</span>vtop (_, OfBool, cond) -&gt; Some cond
-  | <span data-count="38465">_</span> -&gt; None
+  <span data-count="39504">m</span>atch view e with
+  | <span data-count="30321">V</span>al (Bitv bv) when Smtml.Bitvector.eq<span data-count="30321">z</span> bv -&gt; <span data-count="191">S</span>ome Symbolic_boolean.false_
+  | <span data-count="30130">V</span>al (Bitv bv) when Smtml.Bitvector.eq_on<span data-count="30130">e</span> bv -&gt; <span data-count="353">S</span>ome Symbolic_boolean.true_
+  | <span data-count="519">C</span>vtop (_, OfBool, cond) -&gt; Some cond
+  | <span data-count="38441">_</span> -&gt; None
 
 let logand e1 e2 =
-  <span data-count="19695">m</span>atch (boolif<span data-count="19695">y</span> e1, boolif<span data-count="19695">y</span> e2) with
-  | <span data-count="351">S</span>ome b1, Some b2 -&gt; Symbolic_boolean.to_i32 (Bool.and<span data-count="351">_</span> b1 b2)
-  | <span data-count="19344">_</span> -&gt; binop ty And e1 e2
+  <span data-count="19689">m</span>atch (boolif<span data-count="19689">y</span> e1, boolif<span data-count="19689">y</span> e2) with
+  | <span data-count="357">S</span>ome b1, Some b2 -&gt; Symbolic_boolean.to_i32 (Bool.and<span data-count="357">_</span> b1 b2)
+  | <span data-count="19332">_</span> -&gt; binop ty And e1 e2
 
 let logor e1 e2 =
   <span data-count="63">m</span>atch (boolif<span data-count="63">y</span> e1, boolif<span data-count="63">y</span> e2) with
   | <span data-count="5">S</span>ome b1, Some b2 -&gt; Symbolic_boolean.to_i32 (Bool.or<span data-count="5">_</span> b1 b2)
   | <span data-count="58">_</span> -&gt; binop ty Or e1 e2
 
-let logxor e1 e2 = <span data-count="10326">b</span>inop ty Xor e1 e2
+let logxor e1 e2 = <span data-count="10325">b</span>inop ty Xor e1 e2
 
-let shl e1 e2 = <span data-count="16898">b</span>inop ty Shl e1 e2
+let shl e1 e2 = <span data-count="16895">b</span>inop ty Shl e1 e2
 
 let shr_s e1 e2 = <span data-count="6">b</span>inop ty ShrA e1 e2
 
@@ -415,29 +415,29 @@ let rotl e1 e2 = <span data-count="1">b</span>inop ty Rotl e1 e2
 let rotr e1 e2 = <span data-count="1">b</span>inop ty Rotr e1 e2
 
 let eq_concrete e c =
-  <span data-count="97498">m</span>atch view e with
-  | <span data-count="68">C</span>vtop (_, OfBool, cond) -&gt; begin
+  <span data-count="97494">m</span>atch view e with
+  | <span data-count="70">C</span>vtop (_, OfBool, cond) -&gt; begin
     match c with
-    | <span data-count="68">0</span>l -&gt; Bool.not cond
+    | <span data-count="70">0</span>l -&gt; Bool.not cond
     | <span data-count="0">1</span>l -&gt; cond
     | <span data-count="0">_</span> -&gt; Symbolic_boolean.false_
   end
-  | <span data-count="97430">_</span> -&gt; relop Ty_bool Eq e (of_concret<span data-count="97430">e</span> c)
+  | <span data-count="97424">_</span> -&gt; relop Ty_bool Eq e (of_concret<span data-count="97424">e</span> c)
 
 let eq e1 e2 =
-  <span data-count="89239">i</span>f phys_equal e1 e2 then <span data-count="1495">S</span>ymbolic_boolean.true_ else <span data-count="87744">r</span>elop Ty_bool Eq e1 e2
+  <span data-count="89150">i</span>f phys_equal e1 e2 then <span data-count="1490">S</span>ymbolic_boolean.true_ else <span data-count="87660">r</span>elop Ty_bool Eq e1 e2
 
 let ne e1 e2 =
-  <span data-count="84033">i</span>f phys_equal e1 e2 then <span data-count="3245">S</span>ymbolic_boolean.false_ else <span data-count="80788">r</span>elop Ty_bool Ne e1 e2
+  <span data-count="83957">i</span>f phys_equal e1 e2 then <span data-count="3208">S</span>ymbolic_boolean.false_ else <span data-count="80749">r</span>elop Ty_bool Ne e1 e2
 
 let lt e1 e2 =
-  <span data-count="6194">i</span>f phys_equal e1 e2 then <span data-count="62">S</span>ymbolic_boolean.false_ else <span data-count="6132">r</span>elop ty Lt e1 e2
+  <span data-count="6197">i</span>f phys_equal e1 e2 then <span data-count="62">S</span>ymbolic_boolean.false_ else <span data-count="6135">r</span>elop ty Lt e1 e2
 
 let gt e1 e2 =
-  <span data-count="963">i</span>f phys_equal e1 e2 then <span data-count="131">S</span>ymbolic_boolean.false_ else <span data-count="832">r</span>elop ty Gt e1 e2
+  <span data-count="965">i</span>f phys_equal e1 e2 then <span data-count="131">S</span>ymbolic_boolean.false_ else <span data-count="834">r</span>elop ty Gt e1 e2
 
 let lt_u e1 e2 =
-  <span data-count="25016">i</span>f phys_equal e1 e2 then <span data-count="858">S</span>ymbolic_boolean.false_ else <span data-count="24158">r</span>elop ty LtU e1 e2
+  <span data-count="25015">i</span>f phys_equal e1 e2 then <span data-count="864">S</span>ymbolic_boolean.false_ else <span data-count="24151">r</span>elop ty LtU e1 e2
 
 let gt_u e1 e2 =
   <span data-count="142">i</span>f phys_equal e1 e2 then <span data-count="48">S</span>ymbolic_boolean.false_ else <span data-count="94">r</span>elop ty GtU e1 e2
@@ -449,10 +449,10 @@ let ge e1 e2 =
   <span data-count="472">i</span>f phys_equal e1 e2 then <span data-count="123">S</span>ymbolic_boolean.true_ else <span data-count="349">r</span>elop ty Ge e1 e2
 
 let le_u e1 e2 =
-  <span data-count="4010">i</span>f phys_equal e1 e2 then <span data-count="7">S</span>ymbolic_boolean.true_ else <span data-count="4003">r</span>elop ty LeU e1 e2
+  <span data-count="3981">i</span>f phys_equal e1 e2 then <span data-count="6">S</span>ymbolic_boolean.true_ else <span data-count="3975">r</span>elop ty LeU e1 e2
 
 let ge_u e1 e2 =
-  <span data-count="98635">i</span>f phys_equal e1 e2 then <span data-count="111">S</span>ymbolic_boolean.true_ else <span data-count="98524">r</span>elop ty GeU e1 e2
+  <span data-count="98255">i</span>f phys_equal e1 e2 then <span data-count="111">S</span>ymbolic_boolean.true_ else <span data-count="98144">r</span>elop ty GeU e1 e2
 
 let trunc_f32_s x =
   <span data-count="4">t</span>ry Ok (cvto<span data-count="4">p</span> ty TruncSF32 x)
@@ -488,7 +488,7 @@ let trunc_sat_f64_u x = <span data-count="0">c</span>vtop ty Trunc_sat_f64_u x
 
 let reinterpret_f32 x = <span data-count="2">c</span>vtop ty Reinterpret_float x
 
-let wrap_i64 x = <span data-count="1071873">c</span>vtop ty WrapI64 x
+let wrap_i64 x = <span data-count="1071805">c</span>vtop ty WrapI64 x
 
 (* FIXME: This is probably wrong? *)
 let extend_s n x =
