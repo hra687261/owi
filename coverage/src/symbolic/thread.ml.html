@@ -308,7 +308,7 @@ struct
 
   let create num_symbols symbol_scopes pc memories tables globals breadcrumbs
     labels bench_stats =
-    <span data-count="2169108">{</span> num_symbols
+    <span data-count="2169361">{</span> num_symbols
     ; symbol_scopes
     ; pc
     ; memories
@@ -336,39 +336,39 @@ struct
     create num_symbols symbol_scopes pc memories tables globals breadcrumbs
       labels bench_stats
 
-  let num_symbols t = <span data-count="2170250">t</span>.num_symbols
+  let num_symbols t = <span data-count="2170508">t</span>.num_symbols
 
-  let symbol_scopes t = <span data-count="2168943">t</span>.symbol_scopes
+  let symbol_scopes t = <span data-count="2169190">t</span>.symbol_scopes
 
-  let pc t = <span data-count="2196116">t</span>.pc
+  let pc t = <span data-count="2196579">t</span>.pc
 
-  let memories t = <span data-count="4325173">t</span>.memories
+  let memories t = <span data-count="4325665">t</span>.memories
 
-  let tables t = <span data-count="2172733">t</span>.tables
+  let tables t = <span data-count="2172994">t</span>.tables
 
-  let globals t = <span data-count="2170714">t</span>.globals
+  let globals t = <span data-count="2171140">t</span>.globals
 
-  let breadcrumbs t = <span data-count="2168976">t</span>.breadcrumbs
+  let breadcrumbs t = <span data-count="2169243">t</span>.breadcrumbs
 
-  let labels t = <span data-count="2168939">t</span>.labels
+  let labels t = <span data-count="2169193">t</span>.labels
 
-  let bench_stats t = <span data-count="2209527">t</span>.bench_stats
+  let bench_stats t = <span data-count="2210185">t</span>.bench_stats
 
   let add_symbol t s =
     <span data-count="1406">l</span>et open Symbol_scope in
     { t with symbol_scopes = symbo<span data-count="1406">l</span> s t.symbol_scopes }
 
   let add_pc t c =
-    <span data-count="27897">l</span>et pc = Symbolic_path_condition.add t.pc c in
-    <span data-count="27895">{</span> t with pc }
+    <span data-count="28280">l</span>et pc = Symbolic_path_condition.add t.pc c in
+    <span data-count="28281">{</span> t with pc }
 
   let add_breadcrumb t crumb =
-    <span data-count="25726">l</span>et breadcrumbs = crumb :: t.breadcrumbs in
+    <span data-count="25930">l</span>et breadcrumbs = crumb :: t.breadcrumbs in
     { t with breadcrumbs }
 
   let incr_num_symbols t =
-    <span data-count="1545">l</span>et num_symbols = succ t.num_symbols in
-    <span data-count="1545">{</span> t with num_symbols }
+    <span data-count="1556">l</span>et num_symbols = succ t.num_symbols in
+    <span data-count="1556">{</span> t with num_symbols }
 
   let add_label t label = <span data-count="2">{</span> t with labels = label :: t.labels }
 
@@ -380,7 +380,7 @@ struct
     <span data-count="10">l</span>et open Symbol_scope in
     { t with symbol_scopes = close_scop<span data-count="10">e</span> t.symbol_scopes }
 
-  let incr_path_count t = <span data-count="13658">A</span>tomic.incr (bench_stat<span data-count="13658">s</span> t).path_count
+  let incr_path_count t = <span data-count="13846">A</span>tomic.incr (bench_stat<span data-count="13845">s</span> t).path_count
 
   let clone
     { num_symbols
@@ -394,10 +394,10 @@ struct
     ; bench_stats
     } =
     (* WARNING: because we are doing an optimization in `Symbolic_choice`, the cloned state should not refer to a mutable value of the previous state. Assuming that the original state is not mutated is wrong. *)
-    <span data-count="13659">l</span>et memories = Memory.clone memories in
-    <span data-count="13658">l</span>et tables = Symbolic_table.clone tables in
-    <span data-count="13659">l</span>et globals = Symbolic_global.clone globals in
-    <span data-count="13658">{</span> num_symbols
+    <span data-count="13846">l</span>et memories = Memory.clone memories in
+    <span data-count="13846">l</span>et tables = Symbolic_table.clone tables in
+    <span data-count="13846">l</span>et globals = Symbolic_global.clone globals in
+    <span data-count="13846">{</span> num_symbols
     ; symbol_scopes
     ; pc
     ; memories
