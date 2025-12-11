@@ -568,7 +568,7 @@ module M :
     <span data-count="601">S</span>ymbolic_choice_with_memory.assume @@ Symbolic_value.I32.to_boo<span data-count="601">l</span> i
 
   let assert' (i : Symbolic_value.i32) : unit Symbolic_choice_with_memory.t =
-    <span data-count="96967">S</span>ymbolic_choice_with_memory.assertion @@ Symbolic_value.I32.to_boo<span data-count="96967">l</span> i
+    <span data-count="96968">S</span>ymbolic_choice_with_memory.assertion @@ Symbolic_value.I32.to_boo<span data-count="96968">l</span> i
 
   let symbol_bool () =
     <span data-count="4">S</span>ymbolic_choice_with_memory.with_new_symbol (Ty_bitv 1) (fun sym -&gt;
@@ -613,12 +613,12 @@ module M :
 
   let alloc m (base : Symbolic_value.i32) (size : Symbolic_value.i32) :
     Symbolic_value.i32 Symbolic_choice_with_memory.t =
-    <span data-count="9919">S</span>ymbolic_choice_with_memory.lift_mem
-    @@ Symbolic_memory.reallo<span data-count="9919">c</span> m ~ptr:base ~size
+    <span data-count="9922">S</span>ymbolic_choice_with_memory.lift_mem
+    @@ Symbolic_memory.reallo<span data-count="9922">c</span> m ~ptr:base ~size
 
   let free m (ptr : Symbolic_value.i32) :
     Symbolic_value.i32 Symbolic_choice_with_memory.t =
-    <span data-count="2542">S</span>ymbolic_choice_with_memory.lift_mem @@ Symbolic_memory.fre<span data-count="2542">e</span> m ptr
+    <span data-count="2546">S</span>ymbolic_choice_with_memory.lift_mem @@ Symbolic_memory.fre<span data-count="2544">e</span> m ptr
 
   let exit (_p : Symbolic_value.i32) : unit Symbolic_choice_with_memory.t =
     <span data-count="1">a</span>bort ()
