@@ -168,9 +168,9 @@ open Smtml.Expr
 
 let ty = Smtml.Ty.Ty_fp 32
 
-let of_concrete (f : Float32.t) : t = <span data-count="801">v</span>alue (Num (F32 (Float32.to_bit<span data-count="801">s</span> f)))
+let of_concrete (f : Float32.t) : t = <span data-count="802">v</span>alue (Num (F32 (Float32.to_bit<span data-count="802">s</span> f)))
 
-let zero = of_concret<span data-count="745">e</span> Float32.zero
+let zero = of_concret<span data-count="746">e</span> Float32.zero
 
 let abs x = <span data-count="4">u</span>nop ty Abs x
 
@@ -190,7 +190,7 @@ let add x y = <span data-count="3">b</span>inop ty Add x y
 
 let sub x y = <span data-count="3">b</span>inop ty Sub x y
 
-let mul x y = <span data-count="8">b</span>inop ty Mul x y
+let mul x y = <span data-count="7">b</span>inop ty Mul x y
 
 let div x y = <span data-count="4">b</span>inop ty Div x y
 
@@ -214,7 +214,7 @@ let ge x y = <span data-count="9">r</span>elop ty Ge x y
 
 let convert_i32_s x = <span data-count="3">c</span>vtop ty ConvertSI32 x
 
-let convert_i32_u x = <span data-count="10">c</span>vtop ty ConvertUI32 x
+let convert_i32_u x = <span data-count="9">c</span>vtop ty ConvertUI32 x
 
 let convert_i64_s x = <span data-count="1">c</span>vtop ty ConvertSI64 x
 
@@ -224,7 +224,7 @@ let demote_f64 x = <span data-count="1">c</span>vtop ty DemoteF64 x
 
 let reinterpret_i32 x = <span data-count="1">c</span>vtop ty Reinterpret_int x
 
-let of_bits x = <span data-count="24">c</span>vtop ty Reinterpret_int x
+let of_bits x = <span data-count="23">c</span>vtop ty Reinterpret_int x
 
 let to_bits x = <span data-count="17">c</span>vtop (Ty_bitv 32) Reinterpret_float x
 
