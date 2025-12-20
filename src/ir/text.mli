@@ -318,7 +318,11 @@ module Table : sig
     val pp : Format.formatter -> t -> unit
   end
 
-  type t = string option * Type.t
+  type t =
+    { id : string option
+    ; typ : Type.t
+    ; init : expr Annotated.t option
+    }
 
   val pp : Format.formatter -> t -> unit
 end
@@ -427,6 +431,8 @@ module Module : sig
       | Export of Export.t
 
     val pp : Format.formatter -> t -> unit
+
+    val compare : t -> t -> int
   end
 
   type t =
