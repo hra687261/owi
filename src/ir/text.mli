@@ -18,6 +18,8 @@ val pp_indice : Format.formatter -> indice -> unit
 
 val pp_indice_opt : Format.formatter -> indice option -> unit
 
+val compare_indice : indice -> indice -> int
+
 type nonrec num_type =
   | I32
   | I64
@@ -160,6 +162,8 @@ val pp_limits : Format.formatter -> limits -> unit
 (** Types *)
 
 type heap_type =
+  | TypeOf of indice
+  (* abs_heap_type *)
   | Func_ht
   | Extern_ht
 
