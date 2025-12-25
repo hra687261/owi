@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>symbolic_i32.ml &mdash; Coverage report</title>
-    <meta name="description" content="85.85% coverage in src/symbolic/symbolic_i32.ml">
+    <meta name="description" content="85.05% coverage in src/symbolic/symbolic_i32.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -15,20 +15,21 @@
           <span class="dirname">src/symbolic/</span>symbolic_i32.ml
         </a>
       </h1>
-      <h2>85.85%</h2>
+      <h2>85.05%</h2>
     </div>
     <div id="navbar">
-      <span class="unvisited" style="top:13.29%"></span>
-      <span class="unvisited" style="top:20.25%"></span>
-      <span class="unvisited" style="top:23.42%"></span>
-      <span class="unvisited" style="top:24.68%"></span>
-      <span class="unvisited" style="bottom:23.42%"></span>
-      <span class="unvisited" style="bottom:19.62%"></span>
-      <span class="unvisited" style="bottom:15.82%"></span>
-      <span class="unvisited" style="bottom:12.03%"></span>
-      <span class="unvisited" style="bottom:10.13%"></span>
-      <span class="unvisited" style="bottom:7.59%"></span>
-      <span class="unvisited" style="bottom:6.33%"></span>
+      <span class="unvisited" style="top:13.12%"></span>
+      <span class="unvisited" style="top:20.00%"></span>
+      <span class="unvisited" style="top:23.12%"></span>
+      <span class="unvisited" style="top:24.38%"></span>
+      <span class="unvisited" style="bottom:24.38%"></span>
+      <span class="unvisited" style="bottom:20.62%"></span>
+      <span class="unvisited" style="bottom:16.88%"></span>
+      <span class="unvisited" style="bottom:13.12%"></span>
+      <span class="unvisited" style="bottom:11.25%"></span>
+      <span class="unvisited" style="bottom:8.75%"></span>
+      <span class="unvisited" style="bottom:7.50%"></span>
+      <span class="unvisited" style="bottom:0.00%"></span>
     </div>
     <div id="report">
       <div id="lines-layer">
@@ -191,6 +192,8 @@
 <a id="L156"></a><span class="visited"> </span>
 <a id="L157"></a><span > </span>
 <a id="L158"></a><span > </span>
+<a id="L159"></a><span > </span>
+<a id="L160"></a><span class="unvisited"> </span>
 </pre>
       </div>
       <div id="text-layer">
@@ -353,6 +356,8 @@
 <a href="#L156">156</a>
 <a href="#L157">157</a>
 <a href="#L158">158</a>
+<a href="#L159">159</a>
+<a href="#L160">160</a>
 </pre>
 <pre><code class="ocaml">type t = Smtml.Expr.t
 
@@ -360,33 +365,33 @@ open Smtml.Expr
 
 let ty = Smtml.Ty.Ty_bitv 32
 
-let of_concrete (i : Int32.t) : t = <span data-count="3311646">v</span>alue (Bitv (Smtml.Bitvector.of_int3<span data-count="3311594">2</span> i))
+let of_concrete (i : Int32.t) : t = <span data-count="3311845">v</span>alue (Bitv (Smtml.Bitvector.of_int3<span data-count="3311821">2</span> i))
 
-let of_int (i : int) : t = <span data-count="52701">o</span>f_concrete (Int32.of_in<span data-count="52710">t</span> i)
+let of_int (i : int) : t = <span data-count="52714">o</span>f_concrete (Int32.of_in<span data-count="52715">t</span> i)
 
 let zero = of_concret<span data-count="746">e</span> 0l
 
 let one = of_concret<span data-count="746">e</span> 1l
 
 let to_boolean (e : t) : Symbolic_boolean.t =
-  <span data-count="339674">m</span>atch view e with
-  | <span data-count="315403">V</span>al (Bitv bv) -&gt;
-    if Smtml.Bitvector.eqz bv then <span data-count="111560">S</span>ymbolic_boolean.false_
-    else <span data-count="203844">S</span>ymbolic_boolean.true_
-  | <span data-count="2483">P</span>tr _ -&gt; Symbolic_boolean.true_
+  <span data-count="339699">m</span>atch view e with
+  | <span data-count="315739">V</span>al (Bitv bv) -&gt;
+    if Smtml.Bitvector.eqz bv then <span data-count="111590">S</span>ymbolic_boolean.false_
+    else <span data-count="204150">S</span>ymbolic_boolean.true_
+  | <span data-count="2480">P</span>tr _ -&gt; Symbolic_boolean.true_
   | <span data-count="0">S</span>ymbol { ty = Ty_bool; _ } -&gt; Symbolic_boolean.of_expr e
-  | <span data-count="21077">C</span>vtop (_, OfBool, cond) -&gt; Symbolic_boolean.of_expr cond
-  | <span data-count="707">_</span> -&gt;
+  | <span data-count="20771">C</span>vtop (_, OfBool, cond) -&gt; Symbolic_boolean.of_expr cond
+  | <span data-count="708">_</span> -&gt;
     let e = cvtop ty ToBool e in
-    <span data-count="707">S</span>ymbolic_boolean.of_expr e
+    <span data-count="708">S</span>ymbolic_boolean.of_expr e
 
 let of_boolean (e : Symbolic_boolean.t) : t =
-  <span data-count="225609">l</span>et e = Symbolic_boolean.to_expr e in
-  <span data-count="225610">m</span>atch view e with
-  | <span data-count="95344">V</span>al True -&gt; one
-  | <span data-count="107551">V</span>al False -&gt; zero
+  <span data-count="225631">l</span>et e = Symbolic_boolean.to_expr e in
+  <span data-count="225631">m</span>atch view e with
+  | <span data-count="95650">V</span>al True -&gt; one
+  | <span data-count="107698">V</span>al False -&gt; zero
   | <span data-count="0">C</span>vtop (Ty_bitv 32, ToBool, e') -&gt; e'
-  | <span data-count="22715">_</span> -&gt; cvtop (Ty_bitv 32) OfBool e
+  | <span data-count="22283">_</span> -&gt; cvtop (Ty_bitv 32) OfBool e
 
 let clz e = <span data-count="9918">u</span>nop ty Clz e
 
@@ -394,11 +399,11 @@ let ctz e = <span data-count="0">u</span>nop ty Ctz e
 
 let popcnt e = <span data-count="0">u</span>nop ty Popcnt e
 
-let add e1 e2 = <span data-count="1048023">b</span>inop ty Add e1 e2
+let add e1 e2 = <span data-count="1048137">b</span>inop ty Add e1 e2
 
-let sub e1 e2 = <span data-count="11496">b</span>inop ty Sub e1 e2
+let sub e1 e2 = <span data-count="11495">b</span>inop ty Sub e1 e2
 
-let mul e1 e2 = <span data-count="1074021">b</span>inop ty Mul e1 e2
+let mul e1 e2 = <span data-count="1074037">b</span>inop ty Mul e1 e2
 
 let div e1 e2 = <span data-count="23">b</span>inop ty Div e1 e2
 
@@ -409,16 +414,16 @@ let rem e1 e2 = <span data-count="3">b</span>inop ty Rem e1 e2
 let unsigned_rem e1 e2 = <span data-count="79974">b</span>inop ty RemU e1 e2
 
 let boolify e =
-  <span data-count="39480">m</span>atch view e with
-  | <span data-count="30304">V</span>al (Bitv bv) when Smtml.Bitvector.eq<span data-count="30303">z</span> bv -&gt; <span data-count="188">S</span>ome Symbolic_boolean.false_
-  | <span data-count="30115">V</span>al (Bitv bv) when Smtml.Bitvector.eq_on<span data-count="30116">e</span> bv -&gt; <span data-count="340">S</span>ome Symbolic_boolean.true_
+  <span data-count="39486">m</span>atch view e with
+  | <span data-count="30308">V</span>al (Bitv bv) when Smtml.Bitvector.eq<span data-count="30308">z</span> bv -&gt; <span data-count="188">S</span>ome Symbolic_boolean.false_
+  | <span data-count="30120">V</span>al (Bitv bv) when Smtml.Bitvector.eq_on<span data-count="30120">e</span> bv -&gt; <span data-count="340">S</span>ome Symbolic_boolean.true_
   | <span data-count="517">C</span>vtop (_, OfBool, cond) -&gt; Some (Symbolic_boolean.of_exp<span data-count="517">r</span> cond)
-  | <span data-count="38435">_</span> -&gt; None
+  | <span data-count="38441">_</span> -&gt; None
 
 let logand e1 e2 =
-  <span data-count="19677">m</span>atch (boolif<span data-count="19677">y</span> e1, boolif<span data-count="19676">y</span> e2) with
+  <span data-count="19680">m</span>atch (boolif<span data-count="19680">y</span> e1, boolif<span data-count="19680">y</span> e2) with
   | <span data-count="348">S</span>ome b1, Some b2 -&gt; of_boolean (Symbolic_boolean.and<span data-count="348">_</span> b1 b2)
-  | <span data-count="19329">_</span> -&gt; binop ty And e1 e2
+  | <span data-count="19332">_</span> -&gt; binop ty And e1 e2
 
 let logor e1 e2 =
   <span data-count="63">m</span>atch (boolif<span data-count="63">y</span> e1, boolif<span data-count="63">y</span> e2) with
@@ -438,23 +443,23 @@ let rotl e1 e2 = <span data-count="1">b</span>inop ty Rotl e1 e2
 let rotr e1 e2 = <span data-count="1">b</span>inop ty Rotr e1 e2
 
 let eq_concrete (e : t) (c : Int32.t) : Symbolic_boolean.t =
-  <span data-count="97486">r</span>elop Ty_bool Eq e (of_concret<span data-count="97485">e</span> c) |&gt; <span data-count="97486">S</span>ymbolic_boolean.of_expr
+  <span data-count="97485">r</span>elop Ty_bool Eq e (of_concret<span data-count="97485">e</span> c) |&gt; <span data-count="97485">S</span>ymbolic_boolean.of_expr
 
 (* TODO: why do we use `Ty_bool` in the first two cases and `ty` in the others? What is the righe choice? *)
 let eq e1 e2 : Symbolic_boolean.t =
-  <span data-count="89172">r</span>elop Ty_bool Eq e1 e2 |&gt; <span data-count="89172">S</span>ymbolic_boolean.of_expr
+  <span data-count="89183">r</span>elop Ty_bool Eq e1 e2 |&gt; <span data-count="89183">S</span>ymbolic_boolean.of_expr
 
 let ne e1 e2 : Symbolic_boolean.t =
-  <span data-count="83980">r</span>elop Ty_bool Ne e1 e2 |&gt; <span data-count="83980">S</span>ymbolic_boolean.of_expr
+  <span data-count="83987">r</span>elop Ty_bool Ne e1 e2 |&gt; <span data-count="83987">S</span>ymbolic_boolean.of_expr
 
 let lt e1 e2 : Symbolic_boolean.t =
-  <span data-count="6191">r</span>elop ty Lt e1 e2 |&gt; <span data-count="6191">S</span>ymbolic_boolean.of_expr
+  <span data-count="6190">r</span>elop ty Lt e1 e2 |&gt; <span data-count="6190">S</span>ymbolic_boolean.of_expr
 
 let gt e1 e2 : Symbolic_boolean.t =
   <span data-count="962">r</span>elop ty Gt e1 e2 |&gt; <span data-count="962">S</span>ymbolic_boolean.of_expr
 
 let lt_u e1 e2 : Symbolic_boolean.t =
-  <span data-count="25013">r</span>elop ty LtU e1 e2 |&gt; <span data-count="25013">S</span>ymbolic_boolean.of_expr
+  <span data-count="25015">r</span>elop ty LtU e1 e2 |&gt; <span data-count="25015">S</span>ymbolic_boolean.of_expr
 
 let gt_u e1 e2 : Symbolic_boolean.t =
   <span data-count="142">r</span>elop ty GtU e1 e2 |&gt; <span data-count="142">S</span>ymbolic_boolean.of_expr
@@ -466,10 +471,10 @@ let ge e1 e2 : Symbolic_boolean.t =
   <span data-count="472">r</span>elop ty Ge e1 e2 |&gt; <span data-count="472">S</span>ymbolic_boolean.of_expr
 
 let le_u e1 e2 : Symbolic_boolean.t =
-  <span data-count="4001">r</span>elop ty LeU e1 e2 |&gt; <span data-count="4001">S</span>ymbolic_boolean.of_expr
+  <span data-count="3992">r</span>elop ty LeU e1 e2 |&gt; <span data-count="3992">S</span>ymbolic_boolean.of_expr
 
 let ge_u e1 e2 : Symbolic_boolean.t =
-  <span data-count="98294">r</span>elop ty GeU e1 e2 |&gt; <span data-count="98317">S</span>ymbolic_boolean.of_expr
+  <span data-count="98343">r</span>elop ty GeU e1 e2 |&gt; <span data-count="98344">S</span>ymbolic_boolean.of_expr
 
 let trunc_f32_s x =
   <span data-count="4">t</span>ry Ok (cvto<span data-count="4">p</span> ty TruncSF32 x)
@@ -505,13 +510,15 @@ let trunc_sat_f64_u x = <span data-count="0">c</span>vtop ty Trunc_sat_f64_u x
 
 let reinterpret_f32 x = <span data-count="2">c</span>vtop ty Reinterpret_float x
 
-let wrap_i64 x = <span data-count="1071804">c</span>vtop ty WrapI64 x
+let wrap_i64 x = <span data-count="1071816">c</span>vtop ty WrapI64 x
 
 (* FIXME: This is probably wrong? *)
 let extend_s n x =
-  <span data-count="433">c</span>vtop ty (Sign_extend (32 - n)) (extrac<span data-count="433">t</span> x ~high:(n / 8) ~low:0)
+  <span data-count="431">c</span>vtop ty (Sign_extend (32 - n)) (extrac<span data-count="431">t</span> x ~high:(n / 8) ~low:0)
 
 let pp = pp
+
+let symbol s = <span data-count="0">S</span>mtml.Expr.symbol s
 </code></pre>
       </div>
     </div>
