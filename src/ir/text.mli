@@ -162,7 +162,7 @@ val pp_limits : Format.formatter -> limits -> unit
 (** Types *)
 
 type heap_type =
-  | TypeOf of indice
+  | TypeUse of indice
   (* abs_heap_type *)
   | Func_ht
   | Extern_ht
