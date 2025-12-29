@@ -129,6 +129,20 @@ let array_map f a =
   with Exit -> ( match !err with None -> assert false | Some e -> e )
 [@@inline]
 
+let array_mapi f a =
+  let err = ref None in
+  try
+    ok
+    @@ Array.init (Array.length a) (fun i ->
+      let v = Array.get a i in
+      match f i v with
+      | Error _e as e ->
+        err := Some e;
+        raise Exit
+      | Ok v -> v )
+  with Exit -> ( match !err with None -> assert false | Some e -> e )
+[@@inline]
+
 let dynarray_map f a =
   let err = ref None in
   try
