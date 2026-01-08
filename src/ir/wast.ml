@@ -103,18 +103,33 @@ type register = string * string option
 
 let pp_register fmt (s, _name) = pf fmt "(register %s)" s
 
+type module_kind =
+  | Def
+  | Inst
+  | Other
+
+let pp_module_kind fmt = function
+  | Def -> Fmt.pf fmt " definition"
+  | Inst -> Fmt.pf fmt " instance"
+  | Other -> ()
+
 type cmd =
-  | Quoted_module of string
-  | Binary_module of string option * string
-  | Text_module of Module.t
+  | Quoted_module of module_kind * string
+  | Binary_module of module_kind * string option * string
+  | Text_module of module_kind * Module.t
+  | Instance of string option
   | Assert of assertion
   | Register of string * string option
   | Action of action
 
 let pp_cmd fmt = function
-  | Quoted_module m -> pf fmt "(module %S)" m
-  | Binary_module (id, m) -> Fmt.pf fmt "(module %a %S)" Text.pp_id_opt id m
-  | Text_module m -> Module.pp fmt m
+  | Quoted_module (kind, m) -> pf fmt "(module%a %S)" pp_module_kind kind m
+  | Binary_module (kind, id, m) ->
+    Fmt.pf fmt "(module%a %a %S)" pp_module_kind kind Text.pp_id_opt id m
+  | Text_module (kind, m) ->
+    pf fmt "(module%a%a@\n %a\n)" pp_module_kind kind pp_id_opt m.id
+      Text.Module.pp_fields m.fields
+  | Instance id -> pf fmt "(module instance%a)" pp_id_opt id
   | Assert a -> pp_assertion fmt a
   | Register (s, name) -> pp_register fmt (s, name)
   | Action _a -> pf fmt "<action>"

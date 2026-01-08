@@ -451,5 +451,7 @@ module Module : sig
     ; fields : Field.t list
     }
 
+  val pp_fields : Format.formatter -> Field.t list -> unit
+
   val pp : Format.formatter -> t -> unit
 end

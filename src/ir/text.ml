@@ -861,8 +861,8 @@ module Module = struct
     ; fields : Field.t list
     }
 
-  let pp fmt m =
-    pf fmt "(module%a@\n  @[<v>%a@]@\n)" pp_id_opt m.id
-      (list ~sep:pp_newline Field.pp)
-      m.fields
+  let pp_fields fmt fields =
+    Fmt.pf fmt "@[<v>%a@]@" (list ~sep:pp_newline Field.pp) fields
+
+  let pp fmt m = pf fmt "(module%a@\n %a\n)" pp_id_opt m.id pp_fields m.fields
 end
