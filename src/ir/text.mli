@@ -442,8 +442,6 @@ module Module : sig
       | Export of Export.t
 
     val pp : Format.formatter -> t -> unit
-
-    val compare : t -> t -> int
   end
 
   type t =
