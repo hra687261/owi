@@ -106,6 +106,8 @@ and expr = instr Annotated.t list
 
 val pp_instr : short:bool -> Format.formatter -> instr -> unit
 
+val pp_expr : short:bool -> Format.formatter -> expr Annotated.t -> unit
+
 val iter_expr : (instr -> unit) -> expr Annotated.t -> unit
 
 module Func : sig
