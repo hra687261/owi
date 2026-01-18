@@ -1392,7 +1392,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let>! () =
@@ -1416,7 +1416,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let>! () =
@@ -1449,7 +1449,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let>! () =
@@ -1466,7 +1466,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let size = Memory.size mem |> I64.extend_i32_u in
@@ -1495,7 +1495,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let size = Memory.size mem |> I64.extend_i32_u in
@@ -1524,7 +1524,7 @@ struct
     | I_store (memid, nn, { offset; _ }) -> (
       let* mem = Env.get_memory env memid in
       let size = Memory.size mem |> I64.extend_i32_u in
-      let offset = I32.of_concrete offset |> I64.extend_i32_u in
+      let offset = I64.of_concrete offset in
       match nn with
       | S32 ->
         let n, stack = Stack.pop_i32 stack in
@@ -1559,7 +1559,7 @@ struct
     | F_store (memid, nn, { offset; _ }) -> (
       let* mem = Env.get_memory env memid in
       let size = Memory.size mem |> I64.extend_i32_u in
-      let offset = I32.of_concrete offset |> I64.extend_i32_u in
+      let offset = I64.of_concrete offset in
       match nn with
       | S32 ->
         let n, stack = Stack.pop_f32 stack in
@@ -1600,7 +1600,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let>! () =
@@ -1635,7 +1635,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let* mem = Env.get_memory env memid in
@@ -1654,7 +1654,7 @@ struct
       let pos, stack = Stack.pop_i32 stack in
       let addr =
         let pos = I64.extend_i32_u pos in
-        let offset = I32.of_concrete offset |> I64.extend_i32_u in
+        let offset = I64.of_concrete offset in
         I64.add pos offset
       in
       let>! () =
