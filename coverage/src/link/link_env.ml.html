@@ -262,25 +262,25 @@ type 'ext t =
   ; id : int
   }
 
-let id (env : _ t) = <span data-count="2165348">e</span>nv.id
+let id (env : _ t) = <span data-count="2170410">e</span>nv.id
 
 let get_global (env : _ t) id =
-  <span data-count="3060">m</span>atch IMap.find_opt id env.globals with
+  <span data-count="1156">m</span>atch IMap.find_opt id env.globals with
   | None -&gt; assert false
-  | <span data-count="3060">S</span>ome v -&gt; Concrete_choice.return v
+  | <span data-count="1156">S</span>ome v -&gt; Concrete_choice.return v
 
 let get_memory (env : _ t) id =
-  <span data-count="4012999">m</span>atch IMap.find_opt id env.memories with
+  <span data-count="1856631">m</span>atch IMap.find_opt id env.memories with
   | None -&gt; assert false
-  | <span data-count="4012998">S</span>ome v -&gt; Concrete_choice.return v
+  | <span data-count="1856631">S</span>ome v -&gt; Concrete_choice.return v
 
 let get_table (env : _ t) id =
-  <span data-count="807974">m</span>atch IMap.find_opt id env.tables with
+  <span data-count="1608423">m</span>atch IMap.find_opt id env.tables with
   | None -&gt; assert false
-  | <span data-count="807974">S</span>ome v -&gt; Concrete_choice.return v
+  | <span data-count="1608423">S</span>ome v -&gt; Concrete_choice.return v
 
 let get_func (env : _ t) id =
-  <span data-count="5501898">m</span>atch IMap.find_opt id env.functions with None -&gt; assert false | <span data-count="5501897">S</span>ome v -&gt; v
+  <span data-count="5501950">m</span>atch IMap.find_opt id env.functions with None -&gt; assert false | <span data-count="5501951">S</span>ome v -&gt; v
 
 let get_data (env : _ t) id =
   <span data-count="1071">m</span>atch IMap.find_opt id env.data with
@@ -291,8 +291,8 @@ let get_elem (env : _ t) id =
   <span data-count="1283">m</span>atch IMap.find_opt id env.elem with None -&gt; assert false | <span data-count="1283">S</span>ome v -&gt; v
 
 let get_extern_func env id =
-  <span data-count="111517">l</span>et f, _t = Dynarray.get env.extern_funcs id in
-  <span data-count="111517">f</span>
+  <span data-count="111578">l</span>et f, _t = Dynarray.get env.extern_funcs id in
+  <span data-count="111577">f</span>
 
 module Build = struct
   type t =
@@ -314,7 +314,7 @@ module Build = struct
     }
 
   let add_global id const (env : t) =
-    <span data-count="1073">{</span> env with globals = IMap.ad<span data-count="1073">d</span> id const env.globals }
+    <span data-count="1097">{</span> env with globals = IMap.ad<span data-count="1097">d</span> id const env.globals }
 
   let add_memory id mem (env : t) =
     <span data-count="988">{</span> env with memories = IMap.ad<span data-count="988">d</span> id mem env.memories }
@@ -323,7 +323,7 @@ module Build = struct
     <span data-count="750">{</span> env with tables = IMap.ad<span data-count="750">d</span> id table env.tables }
 
   let add_func id func (env : t) =
-    <span data-count="12988">{</span> env with functions = IMap.ad<span data-count="12988">d</span> id func env.functions }
+    <span data-count="13036">{</span> env with functions = IMap.ad<span data-count="13036">d</span> id func env.functions }
 
   let add_data id data (env : t) = <span data-count="725">{</span> env with data = IMap.ad<span data-count="725">d</span> id data env.data }
 
@@ -341,16 +341,16 @@ module Build = struct
     | <span data-count="0">V</span>ar -&gt; Error `Constant_expression_required
 
   let get_func (env : t) id =
-    <span data-count="2632">m</span>atch IMap.find_opt id env.functions with
+    <span data-count="2641">m</span>atch IMap.find_opt id env.functions with
     | <span data-count="0">N</span>one -&gt; Error (`Unknown_func (Text.Raw id))
-    | <span data-count="2632">S</span>ome v -&gt; Ok v
+    | <span data-count="2641">S</span>ome v -&gt; Ok v
 
   let get_memories { memories; _ } = <span data-count="526">m</span>emories
 end
 
 let freeze id ({ globals; memories; tables; functions; data; elem } : Build.t)
   extern_funcs =
-  <span data-count="2389">{</span> id; globals; memories; tables; functions; data; elem; extern_funcs }
+  <span data-count="2395">{</span> id; globals; memories; tables; functions; data; elem; extern_funcs }
 </code></pre>
       </div>
     </div>
