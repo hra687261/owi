@@ -48,7 +48,7 @@ let check_memarg (memarg : Text.memarg) align =
   (* TODO: whether an offset is out of range or not should be determined by
   the memory, but memory64 is not yet supported. *)
   if not (Int64.fits_in_u32 memarg.offset) then Error `Offset_out_of_range
-  else if Int64.ge memarg.align align then Error `Alignment_too_large
+  else if Int32.ge memarg.align align then Error `Alignment_too_large
   else Ok ()
 
 module Env = struct
@@ -457,60 +457,60 @@ let rec typecheck_instr (env : Env.t) (stack : stack) (instr : instr Annotated.t
     (env, stack_e1)
   | I_load8 (id, nn, _, memarg) ->
     let* () = check_mem env.modul id in
-    let* () = check_memarg memarg 1L in
+    let* () = check_memarg memarg 1l in
     let* stack = Stack.pop env.modul [ i32 ] stack in
     let+ stack = Stack.push [ itype nn ] stack in
     (env, stack)
   | I_load16 (id, nn, _, memarg) ->
     let* () = check_mem env.modul id in
-    let* () = check_memarg memarg 2L in
+    let* () = check_memarg memarg 2l in
     let* stack = Stack.pop env.modul [ i32 ] stack in
     let+ stack = Stack.push [ itype nn ] stack in
     (env, stack)
   | I_load (id, nn, memarg) ->
     let* () = check_mem env.modul id in
-    let max_allowed = match nn with S32 -> 4L | S64 -> 8L in
+    let max_allowed = match nn with S32 -> 4l | S64 -> 8l in
     let* () = check_memarg memarg max_allowed in
     let* stack = Stack.pop env.modul [ i32 ] stack in
     let+ stack = Stack.push [ itype nn ] stack in
     (env, stack)
   | I64_load32 (id, _, memarg) ->
     let* () = check_mem env.modul id in
-    let* () = check_memarg memarg 4L in
+    let* () = check_memarg memarg 4l in
     let* stack = Stack.pop env.modul [ i32 ] stack in
     let+ stack = Stack.push [ i64 ] stack in
     (env, stack)
   | I_store8 (id, nn, memarg) ->
     let* () = check_mem env.modul id in
-    let* () = check_memarg memarg 1L in
+    let* () = check_memarg memarg 1l in
     let+ stack = Stack.pop env.modul [ itype nn; i32 ] stack in
     (env, stack)
   | I_store16 (id, nn, memarg) ->
     let* () = check_mem env.modul id in
-    let* () = check_memarg memarg 2L in
+    let* () = check_memarg memarg 2l in
     let+ stack = Stack.pop env.modul [ itype nn; i32 ] stack in
     (env, stack)
   | I_store (id, nn, memarg) ->
     let* () = check_mem env.modul id in
-    let max_allowed = match nn with S32 -> 4L | S64 -> 8L in
+    let max_allowed = match nn with S32 -> 4l | S64 -> 8l in
     let* () = check_memarg memarg max_allowed in
     let+ stack = Stack.pop env.modul [ itype nn; i32 ] stack in
     (env, stack)
   | I64_store32 (id, memarg) ->
     let* () = check_mem env.modul id in
-    let* () = check_memarg memarg 4L in
+    let* () = check_memarg memarg 4l in
     let+ stack = Stack.pop env.modul [ i64; i32 ] stack in
     (env, stack)
   | F_load (id, nn, memarg) ->
     let* () = check_mem env.modul id in
-    let max_allowed = match nn with S32 -> 4L | S64 -> 8L in
+    let max_allowed = match nn with S32 -> 4l | S64 -> 8l in
     let* () = check_memarg memarg max_allowed in
     let* stack = Stack.pop env.modul [ i32 ] stack in
     let+ stack = Stack.push [ ftype nn ] stack in
     (env, stack)
   | F_store (id, nn, memarg) ->
     let* () = check_mem env.modul id in
-    let max_allowed = match nn with S32 -> 4L | S64 -> 8L in
+    let max_allowed = match nn with S32 -> 4l | S64 -> 8l in
     let* () = check_memarg memarg max_allowed in
     let+ stack = Stack.pop env.modul [ ftype nn; i32 ] stack in
     (env, stack)

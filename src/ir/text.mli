@@ -149,7 +149,7 @@ val pp_frelop : frelop Fmt.t
    since it will always be a i32. *)
 type nonrec memarg =
   { offset : Int64.t
-  ; align : Int64.t
+  ; align : Int32.t
   }
 
 val pp_memarg : memarg Fmt.t

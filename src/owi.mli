@@ -295,7 +295,7 @@ module Text : sig
 
   type nonrec memarg =
     { offset : Concrete_i64.t
-    ; align : Concrete_i64.t
+    ; align : Concrete_i32.t
     }
 
   type nonrec limits =
