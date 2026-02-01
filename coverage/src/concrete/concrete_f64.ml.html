@@ -119,7 +119,7 @@
 type t = Float64.t
 
 let promote_f32 x =
-  <span data-count="58">i</span>f Float32.eq x x then <span data-count="52">F</span>loat64.of_float @@ Float32.to_floa<span data-count="52">t</span> x
+  <span data-count="83">i</span>f Float32.eq x x then <span data-count="77">F</span>loat64.of_float @@ Float32.to_floa<span data-count="77">t</span> x
   else
     <span data-count="6">l</span>et nan32bits = Concrete_i64.extend_i32_u (Float32.to_bit<span data-count="6">s</span> x) in
     <span data-count="6">l</span>et sign_field = Int64.(shift_lef<span data-count="6">t</span> (shift_right_logica<span data-count="6">l</span> nan32bits 31) 63) in
@@ -151,7 +151,7 @@ let convert_i64_s x = <span data-count="19">F</span>loat64.of_float (Int64.to_fl
 let convert_i64_u x =
   <span data-count="32">F</span>loat64.of_float
     Int64.(
-      if Int64.ge x zero then <span data-count="22">t</span>o_floa<span data-count="22">t</span> x
+      if Int64.le zero x then <span data-count="22">t</span>o_floa<span data-count="22">t</span> x
       else <span data-count="10">t</span>o_floa<span data-count="10">t</span> (logo<span data-count="10">r</span> (shift_right_logica<span data-count="10">l</span> x 1) (logan<span data-count="10">d</span> x 1L)) *. 2.0 )
 
 let reinterpret_i64 = Float64.of_bits
