@@ -149,53 +149,53 @@
   let is_empty h = <span data-count="0">D</span>ynarray.lengt<span data-count="0">h</span> h = 0
 
   let rec move_up (h : 'a t) x i =
-    <span data-count="7055">i</span>f i = 0 then <span data-count="1899">D</span>ynarray.set h i x
+    <span data-count="6459">i</span>f i = 0 then <span data-count="1512">D</span>ynarray.set h i x
     else
-      <span data-count="5156">l</span>et fi = (i - 1) / 2 in
+      <span data-count="4947">l</span>et fi = (i - 1) / 2 in
       let y = Dynarray.get h fi in
-      <span data-count="5156">i</span>f Prio.compar<span data-count="5156">e</span> (fs<span data-count="5156">t</span> y) (fs<span data-count="5156">t</span> x) &gt; 0 then <span data-count="4">b</span>egin
+      <span data-count="4947">i</span>f Prio.compar<span data-count="4947">e</span> (fs<span data-count="4947">t</span> y) (fs<span data-count="4947">t</span> x) &gt; 0 then <span data-count="4">b</span>egin
         Dynarray.set h i y;
         <span data-count="4">m</span>ove_up h x fi
       end
-      else <span data-count="5152">D</span>ynarray.set h i x
+      else <span data-count="4943">D</span>ynarray.set h i x
 
   let push x h =
-    <span data-count="7051">l</span>et n = Dynarray.length h in
-    <span data-count="7051">D</span>ynarray.add_last h x;
-    <span data-count="7051">m</span>ove_up h x n
+    <span data-count="6455">l</span>et n = Dynarray.length h in
+    <span data-count="6455">D</span>ynarray.add_last h x;
+    <span data-count="6455">m</span>ove_up h x n
 
   let min (h : 'a t) l r =
-    <span data-count="10930">l</span>et xr = Dynarray.get h r in
-    <span data-count="10930">l</span>et xl = Dynarray.get h l in
-    <span data-count="10930">i</span>f Prio.compar<span data-count="10930">e</span> (fs<span data-count="10930">t</span> xr) (fs<span data-count="10930">t</span> xl) &lt; 0 then <span data-count="4674">r</span> else <span data-count="6256">l</span>
+    <span data-count="10617">l</span>et xr = Dynarray.get h r in
+    <span data-count="10617">l</span>et xl = Dynarray.get h l in
+    <span data-count="10617">i</span>f Prio.compar<span data-count="10617">e</span> (fs<span data-count="10617">t</span> xr) (fs<span data-count="10617">t</span> xl) &lt; 0 then <span data-count="4573">r</span> else <span data-count="6044">l</span>
 
   let smallest_node h x i =
-    <span data-count="16679">l</span>et l = (2 * i) + 1 in
+    <span data-count="16141">l</span>et l = (2 * i) + 1 in
     let n = Dynarray.length h in
-    <span data-count="16679">i</span>f l &gt;= n then <span data-count="4932">i</span>
+    <span data-count="16141">i</span>f l &gt;= n then <span data-count="4730">i</span>
     else
-      <span data-count="11747">l</span>et r = l + 1 in
-      let j = if r &lt; n then <span data-count="10930">m</span>i<span data-count="10930">n</span> h l r else <span data-count="817">l</span> in
-      if Prio.compar<span data-count="11747">e</span> (fs<span data-count="11747">t</span> (Dynarray.ge<span data-count="11747">t</span> h j)) (fs<span data-count="11747">t</span> x) &lt; 0 then <span data-count="11547">j</span> else <span data-count="200">i</span>
+      <span data-count="11411">l</span>et r = l + 1 in
+      let j = if r &lt; n then <span data-count="10617">m</span>i<span data-count="10617">n</span> h l r else <span data-count="794">l</span> in
+      if Prio.compar<span data-count="11411">e</span> (fs<span data-count="11411">t</span> (Dynarray.ge<span data-count="11411">t</span> h j)) (fs<span data-count="11411">t</span> x) &lt; 0 then <span data-count="11221">j</span> else <span data-count="190">i</span>
 
   let rec move_down h x i =
-    <span data-count="16679">l</span>et j = smallest_node h x i in
-    <span data-count="16679">i</span>f j = i then <span data-count="5132">D</span>ynarray.set h i x
-    else <span data-count="11547">b</span>egin
-      Dynarray.set h i (Dynarray.ge<span data-count="11547">t</span> h j);
-      <span data-count="11547">m</span>ove_down h x j
+    <span data-count="16141">l</span>et j = smallest_node h x i in
+    <span data-count="16141">i</span>f j = i then <span data-count="4920">D</span>ynarray.set h i x
+    else <span data-count="11221">b</span>egin
+      Dynarray.set h i (Dynarray.ge<span data-count="11221">t</span> h j);
+      <span data-count="11221">m</span>ove_down h x j
     end
 
   let pop h =
-    <span data-count="9427">l</span>et n = Dynarray.length h in
-    <span data-count="9427">i</span>f n = 0 then <span data-count="2411">N</span>one
+    <span data-count="8693">l</span>et n = Dynarray.length h in
+    <span data-count="8692">i</span>f n = 0 then <span data-count="2273">N</span>one
     else
-      <span data-count="7016">l</span>et y = Dynarray.get h 0 in
-      <span data-count="7016">m</span>atch Dynarray.pop_last_opt h with
+      <span data-count="6420">l</span>et y = Dynarray.get h 0 in
+      <span data-count="6420">m</span>atch Dynarray.pop_last_opt h with
       | <span data-count="0">N</span>one -&gt; None
-      | <span data-count="7016">S</span>ome x -&gt;
-        if n &gt; 1 then <span data-count="5132">m</span>ove_dow<span data-count="5132">n</span> h x 0;
-        <span data-count="7016">S</span>ome (sn<span data-count="7016">d</span> y)
+      | <span data-count="6420">S</span>ome x -&gt;
+        if n &gt; 1 then <span data-count="4920">m</span>ove_dow<span data-count="4920">n</span> h x 0;
+        <span data-count="6420">S</span>ome (sn<span data-count="6420">d</span> y)
 end
 </code></pre>
       </div>
