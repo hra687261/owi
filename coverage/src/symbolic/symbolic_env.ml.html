@@ -151,11 +151,11 @@ include Link_env
 type t = Symbolic_extern_func.extern_func Link_env.t
 
 let get_memory (env : t) id : Symbolic_memory.t Symbolic_choice.t =
-  <span data-count="182182">l</span>et ( let* ) = Symbolic_choice.( let* ) in
+  <span data-count="182613">l</span>et ( let* ) = Symbolic_choice.( let* ) in
   let env_id = Link_env.id env in
-  <span data-count="182178">l</span>et* thread = Symbolic_choice.thread in
-  <span data-count="182170">m</span>atch Thread.Collection.find thread.memories ~env_id ~id with
-  | <span data-count="181955">S</span>ome g -&gt; Symbolic_choice.return g
+  <span data-count="182598">l</span>et* state = Symbolic_choice.state in
+  <span data-count="182607">m</span>atch Thread.Collection.find state.memories ~env_id ~id with
+  | <span data-count="182372">S</span>ome g -&gt; Symbolic_choice.return g
   | <span data-count="211">N</span>one -&gt; begin
     match get_memory env id with
     | Error _e -&gt; assert false
@@ -166,11 +166,11 @@ let get_memory (env : t) id : Symbolic_memory.t Symbolic_choice.t =
   end
 
 let get_table (env : t) id : Symbolic_table.t Symbolic_choice.t =
-  <span data-count="8599">l</span>et ( let* ) = Symbolic_choice.( let* ) in
+  <span data-count="8631">l</span>et ( let* ) = Symbolic_choice.( let* ) in
   let env_id = Link_env.id env in
-  <span data-count="8600">l</span>et* thread = Symbolic_choice.thread in
-  <span data-count="8600">m</span>atch Thread.Collection.find thread.tables ~env_id ~id with
-  | <span data-count="8426">S</span>ome g -&gt; Symbolic_choice.return g
+  <span data-count="8631">l</span>et* state = Symbolic_choice.state in
+  <span data-count="8631">m</span>atch Thread.Collection.find state.tables ~env_id ~id with
+  | <span data-count="8456">S</span>ome g -&gt; Symbolic_choice.return g
   | <span data-count="175">N</span>one -&gt; begin
     match get_table env id with
     | Error _e -&gt; assert false
@@ -186,11 +186,11 @@ let get_data env n =
   | <span data-count="432">O</span>k orig_data -&gt; Symbolic_choice.return orig_data
 
 let get_global (env : t) id : Symbolic_global.t Symbolic_choice.t =
-  <span data-count="2019">l</span>et ( let* ) = Symbolic_choice.( let* ) in
+  <span data-count="2076">l</span>et ( let* ) = Symbolic_choice.( let* ) in
   let env_id = Link_env.id env in
-  <span data-count="2019">l</span>et* thread = Symbolic_choice.thread in
-  <span data-count="2019">m</span>atch Thread.Collection.find thread.globals ~env_id ~id with
-  | <span data-count="1780">S</span>ome g -&gt; Symbolic_choice.return g
+  <span data-count="2076">l</span>et* state = Symbolic_choice.state in
+  <span data-count="2076">m</span>atch Thread.Collection.find state.globals ~env_id ~id with
+  | <span data-count="1838">S</span>ome g -&gt; Symbolic_choice.return g
   | <span data-count="238">N</span>one -&gt; begin
     match get_global env id with
     | Error _e -&gt; assert false
