@@ -523,6 +523,8 @@ let rewrite_expr (assigned : Assigned.t) (locals : Text.param list)
     | Br_on_non_null id ->
       let+ id = block_id_to_raw (loop_count, block_ids) id in
       Binary.Br_on_non_null id
+    | Br_on_cast (_, _, _) -> assert false
+    | Br_on_cast_fail (_, _, _) -> assert false
     | Call id ->
       let+ id = Assigned.find_func assigned id in
       Binary.Call id

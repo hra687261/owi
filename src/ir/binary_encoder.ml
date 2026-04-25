@@ -734,6 +734,8 @@ let rec write_instr buf instr =
     write_indice buf idx
   | Br_on_null idx -> write_char_indice buf '\xD5' idx
   | Br_on_non_null idx -> write_char_indice buf '\xD6' idx
+  | Br_on_cast (_, _, _) -> assert false
+  | Br_on_cast_fail (_, _, _) -> assert false
   | Return -> add_char '\x0F'
   | Call idx -> write_char_indice buf '\x10' idx
   | Call_indirect (idx, bt) ->
