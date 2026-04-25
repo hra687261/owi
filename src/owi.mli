@@ -596,6 +596,8 @@ module Text : sig
     | Br_table of indice array * indice
     | Br_on_null of indice
     | Br_on_non_null of indice
+    | Br_on_cast of indice * ref_type * ref_type
+    | Br_on_cast_fail of indice * ref_type * ref_type
     | Return
     | Return_call of indice
     | Return_call_indirect of indice * block_type
@@ -1090,6 +1092,8 @@ module Binary : sig
     | Br_table of indice array * indice
     | Br_on_null of indice
     | Br_on_non_null of indice
+    | Br_on_cast of indice * ref_type * ref_type
+    | Br_on_cast_fail of indice * ref_type * ref_type
     | Return
     | Return_call of indice
     | Return_call_indirect of indice * block_type

@@ -114,6 +114,8 @@ let rec build_graph (l : Binary.expr) nodes n node edges
       let edges_to_add = (n, Ind i, Some 1l) :: edges_to_add in
       let edges = (n, n + 1, Some 0l) :: edges in
       (nodes, edges, n + 1, edges_to_add, false)
+    | Br_on_cast _ -> assert false
+    | Br_on_cast_fail _ -> assert false
     | Return | Return_call _ | Return_call_indirect _ | Return_call_ref _ ->
       let nodes = (n, node) :: nodes in
       let edges_to_add = (n, End, None) :: edges_to_add in

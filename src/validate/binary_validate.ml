@@ -931,6 +931,8 @@ let rec typecheck_instr (env : Env.t) (stack : stack) (instr : instr Annotated.t
     let* jt = Env.block_type_get i env in
     let+ _stack = Stack.pop env.modul jt stack in
     (env, stack)
+  | Br_on_cast (_, _, _) -> assert false
+  | Br_on_cast_fail (_, _, _) -> assert false
   | ( I31 (Ref | Get_s | Get_u)
     | Struct
         ( New _ | New_default _

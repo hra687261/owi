@@ -1462,6 +1462,8 @@ struct
         let stack = Stack.push_ref stack r in
         State.branch { state with stack } i
       else Choice.return (State.Continue state)
+    | Br_on_cast (_, _, _) -> assert false
+    | Br_on_cast_fail (_, _, _) -> assert false
     | Loop (_id, bt, e) -> exec_block state ~is_loop:true bt e
     | Block (_id, bt, e) -> exec_block state ~is_loop:false bt e
     | Select _t ->

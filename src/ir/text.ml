@@ -936,6 +936,8 @@ type instr =
   | Br_table of indice array * indice
   | Br_on_null of indice
   | Br_on_non_null of indice
+  | Br_on_cast of indice * ref_type * ref_type
+  | Br_on_cast_fail of indice * ref_type * ref_type
   | Return
   | Return_call of indice
   | Return_call_indirect of indice * block_type
@@ -1006,6 +1008,11 @@ let rec pp_instr ~short ppf = function
     pf ppf "br_table %a %a" (array ~sep:sp pp_indice) ids pp_indice id
   | Br_on_null id -> pf ppf "br_on_null %a" pp_indice id
   | Br_on_non_null id -> pf ppf "br_on_non_null %a" pp_indice id
+  | Br_on_cast (id, rt1, rt2) ->
+    pf ppf "br_on_cast %a %a %a" pp_indice id pp_ref_type rt1 pp_ref_type rt2
+  | Br_on_cast_fail (id, rt1, rt2) ->
+    pf ppf "br_on_cast_fail %a %a %a" pp_indice id pp_ref_type rt1 pp_ref_type
+      rt2
   | Return -> pf ppf "return"
   | Return_call id -> pf ppf "return_call %a" pp_indice id
   | Return_call_indirect (tbl_id, ty_id) ->
