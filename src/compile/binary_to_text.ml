@@ -388,8 +388,16 @@ let rec convert_instr : Binary.instr -> Text.instr = function
   | Br_on_non_null id ->
     let id = convert_indice id in
     Br_on_non_null id
-  | Br_on_cast (_, _, _) -> assert false
-  | Br_on_cast_fail (_, _, _) -> assert false
+  | Br_on_cast (id, rt1, rt2) ->
+    let id = convert_indice id in
+    let rt1 = convert_ref_type rt1 in
+    let rt2 = convert_ref_type rt2 in
+    Br_on_cast (id, rt1, rt2)
+  | Br_on_cast_fail (id, rt1, rt2) ->
+    let id = convert_indice id in
+    let rt1 = convert_ref_type rt1 in
+    let rt2 = convert_ref_type rt2 in
+    Br_on_cast_fail (id, rt1, rt2)
   | Call id ->
     let id = convert_indice id in
     Call id

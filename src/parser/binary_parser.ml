@@ -361,6 +361,17 @@ let read_memarg max_align input =
     (memidx, { Binary.align; offset }, input)
 (* TODO: should the checks be moved to validate? *)
 
+let read_castop input =
+  let* b, input =
+    read_byte ~msg:"unexpected end of section or function (read_castop)" input
+  in
+  match b with
+  | '\x00' -> Ok (Text.No_null, Text.No_null, input)
+  | '\x01' -> Ok (Text.Null, Text.No_null, input)
+  | '\x02' -> Ok (Text.No_null, Text.Null, input)
+  | '\x03' -> Ok (Text.Null, Text.Null, input)
+  | _ -> parse_fail "integer too large (read_castop)"
+
 let read_FB input =
   let* i, input = read_U32 input in
   match i with
@@ -448,6 +459,22 @@ let read_FB input =
     let* b, input = read_S7 input in
     let+ ht, input = read_heap_type input b in
     (Ref (Cast (Null, ht)), input)
+  | 24 ->
+    let* n1, n2, input = read_castop input in
+    let* id, input = read_indice input in
+    let* b, input = read_S7 input in
+    let* ht1, input = read_heap_type input b in
+    let* b, input = read_S7 input in
+    let+ ht2, input = read_heap_type input b in
+    (Br_on_cast (id, (n1, ht1), (n2, ht2)), input)
+  | 25 ->
+    let* n1, n2, input = read_castop input in
+    let* id, input = read_indice input in
+    let* b, input = read_S7 input in
+    let* ht1, input = read_heap_type input b in
+    let* b, input = read_S7 input in
+    let+ ht2, input = read_heap_type input b in
+    (Br_on_cast_fail (id, (n1, ht1), (n2, ht2)), input)
   | 26 -> Ok (Any_convert_extern, input)
   | 27 -> Ok (Extern_convert_any, input)
   | 28 -> Ok (I31 Ref, input)

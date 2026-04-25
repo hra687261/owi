@@ -328,6 +328,12 @@ let plain_instr :=
   }
   | BR_ON_NULL; ~ = indice; <Br_on_null>
   | BR_ON_NON_NULL; ~ = indice; <Br_on_non_null>
+  | BR_ON_CAST; id = indice; rt1 = ref_type; rt2 = ref_type; {
+    Br_on_cast (id, rt1, rt2)
+  }
+  | BR_ON_CAST_FAIL; id = indice; rt1 = ref_type; rt2 = ref_type; {
+    Br_on_cast_fail (id, rt1, rt2)
+  }
   | RETURN; { Return }
   | RETURN_CALL; ~ = indice; <Return_call>
   | RETURN_CALL_REF; ~ = indice; { Return_call_ref (Bt_ind indice) }

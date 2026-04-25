@@ -225,6 +225,10 @@ let write_func_import buf
   Buffer.add_char buf '\x00';
   write_block_type_idx buf typ
 
+let write_fb buf i =
+  Buffer.add_char buf '\xFB';
+  write_u32_of_int buf i
+
 let write_fc buf i =
   Buffer.add_char buf '\xFC';
   write_u32_of_int buf i
@@ -232,6 +236,13 @@ let write_fc buf i =
 let write_fd buf i =
   Buffer.add_char buf '\xFD';
   write_u32_of_int buf i
+
+let write_castop buf n1 n2 =
+  match (n1, n2) with
+  | Text.No_null, Text.No_null -> Buffer.add_char buf '\x00'
+  | Null, No_null -> Buffer.add_char buf '\x01'
+  | No_null, Null -> Buffer.add_char buf '\x02'
+  | Null, Null -> Buffer.add_char buf '\x03'
 
 let write_i32_instr buf : Binary.i32_instr -> _ =
   let add_char c = Buffer.add_char buf c in
@@ -734,8 +745,18 @@ let rec write_instr buf instr =
     write_indice buf idx
   | Br_on_null idx -> write_char_indice buf '\xD5' idx
   | Br_on_non_null idx -> write_char_indice buf '\xD6' idx
-  | Br_on_cast (_, _, _) -> assert false
-  | Br_on_cast_fail (_, _, _) -> assert false
+  | Br_on_cast (id, (n1, ht1), (n2, ht2)) ->
+    write_fb buf 24;
+    write_castop buf n1 n2;
+    write_indice buf id;
+    write_heaptype buf ht1;
+    write_heaptype buf ht2
+  | Br_on_cast_fail (id, (n1, ht1), (n2, ht2)) ->
+    write_fb buf 25;
+    write_castop buf n1 n2;
+    write_indice buf id;
+    write_heaptype buf ht1;
+    write_heaptype buf ht2
   | Return -> add_char '\x0F'
   | Call idx -> write_char_indice buf '\x10' idx
   | Call_indirect (idx, bt) ->
