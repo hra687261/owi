@@ -364,6 +364,9 @@ let ref_type_as_non_null t =
     Ok t
   | _ -> assert false
 
+let ref_type_diff (n1, ht1) (n2, _ht2) =
+  match (n2 : Text.nullable) with Null -> (Text.No_null, ht1) | _ -> (n1, ht1)
+
 let typecheck_i32_instr (env : Env.t) stack = function
   | (Const _ : Binary.i32_instr) ->
     let+ stack = Stack.push [ i32 ] stack in
@@ -931,8 +934,40 @@ let rec typecheck_instr (env : Env.t) (stack : stack) (instr : instr Annotated.t
     let* jt = Env.block_type_get i env in
     let+ _stack = Stack.pop env.modul jt stack in
     (env, stack)
-  | Br_on_cast (_, _, _) -> assert false
-  | Br_on_cast_fail (_, _, _) -> assert false
+  | Br_on_cast (id, rt1, rt2) ->
+    let* is_sub =
+      Stack.match_ref_type ~subtype:true env.modul ~expected:rt1 ~got:rt2
+    in
+    if not is_sub then
+      Error (`Type_mismatch "br_on_cast: rt2 is not a subtype of rt1")
+    else
+      (* pop rt1 *)
+      let* stack = Stack.pop env.modul [ Ref_type rt1 ] stack in
+      (* check rt2 <= rt *)
+      let* rt = Env.block_type_get id env in
+      let* check_stack = Stack.push [ Ref_type rt2 ] stack in
+      let* _ = Stack.pop env.modul rt check_stack in
+      (* push rt_diff (rt1 \ rt2) *)
+      let rt_diff = ref_type_diff rt1 rt2 in
+      let+ stack = Stack.push [ Ref_type rt_diff ] stack in
+      (env, stack)
+  | Br_on_cast_fail (id, rt1, rt2) ->
+    let* is_sub =
+      Stack.match_ref_type ~subtype:true env.modul ~expected:rt1 ~got:rt2
+    in
+    if not is_sub then
+      Error (`Type_mismatch "br_on_cast_fail: rt2 is not a subtype of rt1")
+    else
+      (* pop rt1 *)
+      let* stack = Stack.pop env.modul [ Ref_type rt1 ] stack in
+      (* check rt_diff (rt1 \ rt2) <= rt *)
+      let* rt = Env.block_type_get id env in
+      let rt_diff = ref_type_diff rt1 rt2 in
+      let* check_stack = Stack.push [ Ref_type rt_diff ] stack in
+      let* _ = Stack.pop env.modul rt check_stack in
+      (* push rt2 *)
+      let+ stack = Stack.push [ Ref_type rt2 ] stack in
+      (env, stack)
   | ( I31 (Ref | Get_s | Get_u)
     | Struct
         ( New _ | New_default _
