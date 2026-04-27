@@ -144,7 +144,7 @@ let pp_heap_type fmt = function
   | Eq_ht -> pf fmt "eq"
   | I31_ht -> pf fmt "i31"
   | Struct_ht -> pf fmt "struct"
-  | Array_ht -> pf fmt "any"
+  | Array_ht -> pf fmt "array"
   | None_ht -> pf fmt "none"
   | Func_ht -> pf fmt "func"
   | NoFunc_ht -> pf fmt "nofunc"
