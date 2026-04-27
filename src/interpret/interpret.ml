@@ -1323,6 +1323,30 @@ struct
       end
     | _ -> Choice.trap `Indirect_call_type_mismatch
 
+  let ref_matches_ref_type (r : Ref.t) ((nullable, ht) : ref_type) : bool =
+    let is_null = match nullable with Null -> true | No_null -> false in
+    match r with
+    | Ref.Func None when is_null -> (
+      match ht with Func_ht | NoFunc_ht | TypeUse _ -> true | _ -> false )
+    | Ref.Extern None when is_null -> (
+      match ht with Extern_ht | NoExtern_ht -> true | _ -> false )
+    | Ref.NullRef when is_null -> (
+      match ht with
+      | Any_ht | None_ht | Eq_ht | I31_ht | Struct_ht | Array_ht -> true
+      | _ -> false )
+    | Ref.NullExn when is_null -> (
+      match ht with Exn_ht | NoExn_ht -> true | _ -> false )
+    | Ref.Func (Some _) -> (
+      match ht with
+      | Func_ht -> true
+      | TypeUse _ ->
+        Fmt.failwith
+          "ref_matches_ref_type: check that the function type matches the type \
+           of the typeuse id"
+      | _ -> false )
+    | Ref.Extern (Some _) -> ( match ht with Extern_ht -> true | _ -> false )
+    | Func None | Extern None | NullExn | NullRef -> false
+
   let exec_instr instr (state : State.exec_state) : State.instr_result Choice.t
       =
     let stack = state.stack in
@@ -1462,8 +1486,45 @@ struct
         let stack = Stack.push_ref stack r in
         State.branch { state with stack } i
       else Choice.return (State.Continue state)
-    | Br_on_cast (_, _, _) -> assert false
-    | Br_on_cast_fail (_, _, _) -> assert false
+    | Br_on_cast (i, _rt1, rt2) ->
+      let instr_counter_true =
+        Next_instruction.branch state i |> Next_instruction.with_instr_counter
+      in
+      let instr_counter_false =
+        Next_instruction.continue state |> Next_instruction.with_instr_counter
+      in
+      let r, stack = Stack.pop_as_ref stack in
+      let matches = ref_matches_ref_type r rt2 |> Boolean.of_bool in
+      let* matches, stack =
+        let* matches =
+          select matches ~instr_counter_false ~instr_counter_true
+        in
+        return (matches, stack)
+      in
+      let stack = Stack.push_ref stack r in
+      let state = { state with stack } in
+      if matches then State.branch state i
+      else Choice.return (State.Continue state)
+    | Br_on_cast_fail (i, _rt1, rt2) ->
+      let instr_counter_true =
+        Next_instruction.continue state |> Next_instruction.with_instr_counter
+      in
+      let instr_counter_false =
+        (* branch if the condition is false *)
+        Next_instruction.branch state i |> Next_instruction.with_instr_counter
+      in
+      let r, stack = Stack.pop_as_ref stack in
+      let matches = ref_matches_ref_type r rt2 |> Boolean.of_bool in
+      let* matches, stack =
+        let* matches =
+          select matches ~instr_counter_true ~instr_counter_false
+        in
+        return (matches, stack)
+      in
+      let stack = Stack.push_ref stack r in
+      let state = { state with stack } in
+      if not matches then State.branch state i
+      else Choice.return (State.Continue state)
     | Loop (_id, bt, e) -> exec_block state ~is_loop:true bt e
     | Block (_id, bt, e) -> exec_block state ~is_loop:false bt e
     | Select _t ->
