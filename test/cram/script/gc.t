@@ -12,14 +12,15 @@
   Failure("Assigned: unimplemented for rec and sub types")
   $ owi script --no-exhaustion reference/array.wast 2>&1 | grep -oE "Failure.*"
   Failure("Assigned: unimplemented for rec and sub types")
-  $ owi script --no-exhaustion reference/br_on_cast_fail.wast
-  owi: [ERROR] unexpected token "$l" in line 30, character 23-25
-  [40]
-  $ owi script --no-exhaustion reference/br_on_cast.wast
-  owi: [ERROR] unexpected token "$l" in line 30, character 18-20
-  [40]
+  $ owi script --no-exhaustion reference/br_on_cast_fail.wast 2>&1 | grep -oE "Failure.*"
+  Failure("Assigned: unimplemented for rec and sub types")
+  $ owi script --no-exhaustion reference/br_on_cast.wast 2>&1 | grep -oE "Failure.*"
+  Failure("Assigned: unimplemented for rec and sub types")
+  $ owi script --no-exhaustion reference/br_on_non_null.wast
+  $ owi script --no-exhaustion reference/br_on_null.wast 2>&1 | grep -oE "Failure.*"
+  Failure("TODO: uninmplemented `call_ref`")
   $ owi script --no-exhaustion reference/call_ref.wast 2>&1 | grep -oE "Failure.*"
-  Failure("TODO")
+  Failure("TODO: uninmplemented `call_ref`")
   $ owi script --no-exhaustion reference/extern.wast 2>&1 | grep -oE "Failure.*"
   Failure("Assigned: unimplemented for rec and sub types")
   $ owi script --no-exhaustion reference/i31.wast 2>&1 | grep -oE "Failure.*"

@@ -1275,7 +1275,7 @@ struct
 
   let call_ref ~return:_ (_state : State.exec_state) _typ_i =
     (* TODO *)
-    raise @@ Failure "TODO"
+    Fmt.failwith "TODO: uninmplemented `call_ref`"
   (* let fun_ref, stack = Stack.pop_as_ref state.stack in *)
   (* let state = { state with stack } in *)
   (* let func = *)
