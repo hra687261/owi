@@ -930,9 +930,11 @@ let rec typecheck_instr (env : Env.t) (stack : stack) (instr : instr Annotated.t
     let+ stack = Stack.push [ t ] stack in
     (env, stack)
   | Br_on_non_null i ->
-    let* _, stack = Stack.pop_ref stack in
+    let* t, stack = Stack.pop_ref stack in
+    let* t = ref_type_as_non_null t in
     let* jt = Env.block_type_get i env in
-    let+ _stack = Stack.pop env.modul jt stack in
+    let* check_stack = Stack.push [ t ] stack in
+    let+ _stack = Stack.pop env.modul jt check_stack in
     (env, stack)
   | Br_on_cast (id, rt1, rt2) ->
     let* is_sub =

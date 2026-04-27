@@ -16,7 +16,8 @@
   Failure("Assigned: unimplemented for rec and sub types")
   $ owi script --no-exhaustion reference/br_on_cast.wast 2>&1 | grep -oE "Failure.*"
   Failure("Assigned: unimplemented for rec and sub types")
-  $ owi script --no-exhaustion reference/br_on_non_null.wast
+  $ owi script --no-exhaustion reference/br_on_non_null.wast 2>&1 | grep -oE "Failure.*"
+  Failure("TODO: uninmplemented `call_ref`")
   $ owi script --no-exhaustion reference/br_on_null.wast 2>&1 | grep -oE "Failure.*"
   Failure("TODO: uninmplemented `call_ref`")
   $ owi script --no-exhaustion reference/call_ref.wast 2>&1 | grep -oE "Failure.*"
