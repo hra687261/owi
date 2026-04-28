@@ -59,6 +59,5 @@ jobs:
             --title "Update testsuite subrepo ($time)" \
             --body "Automated update check for \
             \`$TESTSUITE_SUBMODULE_PATH/\`." \
-            # --label "no changelog" \
             --base main \
             --head "$branch"
