@@ -18,12 +18,12 @@
       <h2>54.84%</h2>
     </div>
     <div id="navbar">
-      <span class="unvisited" style="bottom:40.21%"></span>
-      <span class="unvisited" style="bottom:39.86%"></span>
       <span class="unvisited" style="bottom:39.51%"></span>
-      <span class="unvisited" style="bottom:37.06%"></span>
-      <span class="unvisited" style="bottom:32.87%"></span>
-      <span class="unvisited" style="bottom:32.52%"></span>
+      <span class="unvisited" style="bottom:39.16%"></span>
+      <span class="unvisited" style="bottom:38.81%"></span>
+      <span class="unvisited" style="bottom:36.36%"></span>
+      <span class="unvisited" style="bottom:32.17%"></span>
+      <span class="unvisited" style="bottom:31.82%"></span>
       <span class="unvisited" style="bottom:24.48%"></span>
       <span class="unvisited" style="bottom:23.78%"></span>
       <span class="unvisited" style="bottom:23.08%"></span>
@@ -194,43 +194,43 @@
 <a id="L156"></a><span > </span>
 <a id="L157"></a><span > </span>
 <a id="L158"></a><span > </span>
-<a id="L159"></a><span class="visited"> </span>
-<a id="L160"></a><span class="visited"> </span>
+<a id="L159"></a><span > </span>
+<a id="L160"></a><span > </span>
 <a id="L161"></a><span class="visited"> </span>
 <a id="L162"></a><span class="visited"> </span>
 <a id="L163"></a><span class="visited"> </span>
 <a id="L164"></a><span class="visited"> </span>
 <a id="L165"></a><span class="visited"> </span>
-<a id="L166"></a><span > </span>
-<a id="L167"></a><span > </span>
-<a id="L168"></a><span class="visited"> </span>
-<a id="L169"></a><span class="visited"> </span>
+<a id="L166"></a><span class="visited"> </span>
+<a id="L167"></a><span class="visited"> </span>
+<a id="L168"></a><span > </span>
+<a id="L169"></a><span > </span>
 <a id="L170"></a><span class="visited"> </span>
-<a id="L171"></a><span class="unvisited"> </span>
-<a id="L172"></a><span class="unvisited"> </span>
+<a id="L171"></a><span class="visited"> </span>
+<a id="L172"></a><span class="visited"> </span>
 <a id="L173"></a><span class="unvisited"> </span>
-<a id="L174"></a><span > </span>
-<a id="L175"></a><span > </span>
+<a id="L174"></a><span class="unvisited"> </span>
+<a id="L175"></a><span class="unvisited"> </span>
 <a id="L176"></a><span > </span>
-<a id="L177"></a><span class="visited"> </span>
-<a id="L178"></a><span class="visited"> </span>
+<a id="L177"></a><span > </span>
+<a id="L178"></a><span > </span>
 <a id="L179"></a><span class="visited"> </span>
-<a id="L180"></a><span class="unvisited"> </span>
+<a id="L180"></a><span class="visited"> </span>
 <a id="L181"></a><span class="visited"> </span>
-<a id="L182"></a><span > </span>
-<a id="L183"></a><span > </span>
+<a id="L182"></a><span class="unvisited"> </span>
+<a id="L183"></a><span class="visited"> </span>
 <a id="L184"></a><span > </span>
 <a id="L185"></a><span > </span>
 <a id="L186"></a><span > </span>
-<a id="L187"></a><span class="visited"> </span>
+<a id="L187"></a><span > </span>
 <a id="L188"></a><span > </span>
-<a id="L189"></a><span > </span>
-<a id="L190"></a><span class="visited"> </span>
+<a id="L189"></a><span class="visited"> </span>
+<a id="L190"></a><span > </span>
 <a id="L191"></a><span > </span>
-<a id="L192"></a><span class="unvisited"> </span>
-<a id="L193"></a><span class="unvisited"> </span>
-<a id="L194"></a><span > </span>
-<a id="L195"></a><span > </span>
+<a id="L192"></a><span class="visited"> </span>
+<a id="L193"></a><span > </span>
+<a id="L194"></a><span class="unvisited"> </span>
+<a id="L195"></a><span class="unvisited"> </span>
 <a id="L196"></a><span > </span>
 <a id="L197"></a><span > </span>
 <a id="L198"></a><span > </span>
@@ -613,7 +613,11 @@
 <a href="#L285">285</a>
 <a href="#L286">286</a>
 </pre>
-<pre><code class="ocaml">module Func = struct
+<pre><code class="ocaml">(* SPDX-License-Identifier: AGPL-3.0-or-later *)
+(* Copyright © 2021-2026 OCamlPro *)
+(* Written by the Owi programmers *)
+
+module Func = struct
   module type T = sig
     type i32
 
@@ -665,8 +669,6 @@
 
       type elt
 
-      type mem
-
       type (_, _, _) t
 
       val i32 : (lr, elt, i32) t
@@ -683,7 +685,7 @@
 
       val unit : (lr, unit, unit) t
 
-      val memory : int -&gt; (l, mem, memory) t
+      val memory : int -&gt; (l, memory, memory) t
 
       val label : string -&gt; (lr, elt, 'a) t -&gt; (l, string * elt, 'a) t
 
@@ -771,62 +773,60 @@
     type extern_func = Extern_func : 'a func_type * 'a -&gt; extern_func
 
     let elt_type (type t) (e : t telt) : Binary.val_type =
-      <span data-count="17194">m</span>atch e with
-      | <span data-count="14435">I</span>32 -&gt; Num_type I32
-      | <span data-count="607">I</span>64 -&gt; Num_type I64
-      | <span data-count="772">F</span>32 -&gt; Num_type F32
-      | <span data-count="940">F</span>64 -&gt; Num_type F64
-      | <span data-count="437">V</span>128 -&gt; Num_type V128
+      <span data-count="17562">m</span>atch e with
+      | <span data-count="14673">I</span>32 -&gt; Num_type I32
+      | <span data-count="630">I</span>64 -&gt; Num_type I64
+      | <span data-count="814">F</span>32 -&gt; Num_type F32
+      | <span data-count="1001">F</span>64 -&gt; Num_type F64
+      | <span data-count="441">V</span>128 -&gt; Num_type V128
       | <span data-count="3">E</span>xternref _ -&gt; Ref_type (Null, Extern_ht)
 
     let res_type (type t) (r : t rtype) : Binary.result_type =
-      <span data-count="11857">m</span>atch r with
-      | <span data-count="5875">R</span>0 -&gt; []
-      | <span data-count="5982">R</span>1 a -&gt; [ elt_typ<span data-count="5982">e</span> a ]
+      <span data-count="12158">m</span>atch r with
+      | <span data-count="6086">R</span>0 -&gt; []
+      | <span data-count="6072">R</span>1 a -&gt; [ elt_typ<span data-count="6072">e</span> a ]
       | <span data-count="0">R</span>2 (a, b) -&gt; [ elt_typ<span data-count="0">e</span> a; elt_typ<span data-count="0">e</span> b ]
       | <span data-count="0">R</span>3 (a, b, c) -&gt; [ elt_typ<span data-count="0">e</span> a; elt_typ<span data-count="0">e</span> b; elt_typ<span data-count="0">e</span> c ]
       | <span data-count="0">R</span>4 (a, b, c, d) -&gt; [ elt_typ<span data-count="0">e</span> a; elt_typ<span data-count="0">e</span> b; elt_typ<span data-count="0">e</span> c; elt_typ<span data-count="0">e</span> d ]
 
     let arg_type =
       let rec aux : type t r. (t, r) atype -&gt; Binary.param_type = function
-        | <span data-count="2186">M</span>em (_, tl) -&gt; aux tl
-        | <span data-count="4422">U</span>Arg tl -&gt; aux tl
-        | <span data-count="11212">A</span>rg (hd, tl) -&gt; (None, elt_typ<span data-count="11212">e</span> hd) :: au<span data-count="11212">x</span> tl
+        | <span data-count="2206">M</span>em (_, tl) -&gt; aux tl
+        | <span data-count="4515">U</span>Arg tl -&gt; aux tl
+        | <span data-count="11490">A</span>rg (hd, tl) -&gt; (None, elt_typ<span data-count="11490">e</span> hd) :: au<span data-count="11490">x</span> tl
         | <span data-count="0">N</span>Arg (name, hd, tl) -&gt; (Some name, elt_typ<span data-count="0">e</span> hd) :: au<span data-count="0">x</span> tl
-        | <span data-count="11857">R</span>es -&gt; []
+        | <span data-count="12158">R</span>es -&gt; []
       in
       aux
 
     (* TODO: we could move this out, as it does not really depend on the functor's parameters *)
     let extern_type (Extern_func (Func (arg, res), _)) : Binary.func_type =
-      <span data-count="11857">(</span>arg_typ<span data-count="11857">e</span> arg, res_typ<span data-count="11857">e</span> res)
+      <span data-count="12158">(</span>arg_typ<span data-count="12158">e</span> arg, res_typ<span data-count="12158">e</span> res)
 
     let fresh =
-      let r = ref ~<span data-count="1530">-</span>1 in
+      let r = ref ~<span data-count="1570">-</span>1 in
       fun () -&gt;
         <span data-count="0">i</span>ncr r;
         <span data-count="0">!</span>r
 
     module Syntax = struct
-      type l
+      type l = private [ `L ]
 
-      type lr
+      type lr = private [ `Lr ]
 
-      type elt
-
-      type mem
+      type elt = private [ `Elt ]
 
       type (_, _, _) t =
         | Unit : (lr, unit, unit) t
-        | Memory : int -&gt; (l, mem, memory) t
+        | Memory : int -&gt; (l, memory, memory) t
         | Elt : 'a telt -&gt; (lr, elt, 'a) t
         | Elt_labeled : string * 'a telt -&gt; (l, string * elt, 'a) t
 
-      let return r = <span data-count="45246">F</span>unc (Res, r)
+      let return r = <span data-count="46426">F</span>unc (Res, r)
 
-      let r0 = R0 |&gt; retur<span data-count="1530">n</span>
+      let r0 = R0 |&gt; retur<span data-count="1570">n</span>
 
-      let r1 (Elt a) = <span data-count="43716">R</span>1 a |&gt; return
+      let r1 (Elt a) = <span data-count="44856">R</span>1 a |&gt; return
 
       let r2 (Elt a) (Elt b) = <span data-count="0">R</span>2 (a, b) |&gt; return
 
@@ -848,7 +848,7 @@
 
       let unit = Unit
 
-      let memory id = <span data-count="7701">M</span>emory id
+      let memory id = <span data-count="7901">M</span>emory id
 
       let label s (Elt v) = <span data-count="0">E</span>lt_labeled (s, v)
 
@@ -856,18 +856,18 @@
         let aux : type lr k a b.
           (lr, k, a) t -&gt; b func_type -&gt; (a -&gt; b) func_type =
          fun a (Func (b, r)) -&gt;
-          <span data-count="130373">m</span>atch a with
-          | <span data-count="104994">E</span>lt a -&gt; Func (Arg (a, b), r)
+          <span data-count="133773">m</span>atch a with
+          | <span data-count="107734">E</span>lt a -&gt; Func (Arg (a, b), r)
           | <span data-count="0">E</span>lt_labeled (label, a) -&gt; Func (NArg (label, a, b), r)
-          | <span data-count="17678">U</span>nit -&gt; Func (UArg b, r)
-          | <span data-count="7701">M</span>emory id -&gt; Func (Mem (id, b), r)
+          | <span data-count="18138">U</span>nit -&gt; Func (UArg b, r)
+          | <span data-count="7901">M</span>emory id -&gt; Func (Mem (id, b), r)
         in
         aux
 
       let ( ^-&gt;. ) =
         let aux : type ll k kk a b.
           (ll, k, a) t -&gt; (lr, kk, b) t -&gt; (a -&gt; b m) func_type =
-         fun a b -&gt; <span data-count="66778">m</span>atch b with <span data-count="43716">E</span>lt _ -&gt; a ^-&gt; r<span data-count="43716">1</span> b | <span data-count="23062">U</span>nit -&gt; a ^-&gt; r0
+         fun a b -&gt; <span data-count="68518">m</span>atch b with <span data-count="44856">E</span>lt _ -&gt; a ^-&gt; r<span data-count="44856">1</span> b | <span data-count="23662">U</span>nit -&gt; a ^-&gt; r0
         in
         aux
 

@@ -53,15 +53,15 @@
 <a href="#L12">12</a>
 </pre>
 <pre><code class="ocaml">(* SPDX-License-Identifier: AGPL-3.0-or-later *)
-(* Copyright © 2021-2024 OCamlPro *)
+(* Copyright © 2021-2026 OCamlPro *)
 (* Written by the Owi programmers *)
 
 (* TODO: remove once there is an equivalent in stdlib *)
 let atomic_modify f atomic =
-  <span data-count="26037">l</span>et rec loop f atomic =
-    <span data-count="26037">l</span>et v_old = Atomic.get atomic in
-    <span data-count="26037">l</span>et v_new = f v_old in
-    <span data-count="26037">i</span>f Atomic.compare_and_set atomic v_old v_new then <span data-count="26037">(</span>) else <span data-count="0">l</span>oop f atomic
+  <span data-count="25867">l</span>et rec loop f atomic =
+    <span data-count="25867">l</span>et v_old = Atomic.get atomic in
+    <span data-count="25867">l</span>et v_new = f v_old in
+    <span data-count="25867">i</span>f Atomic.compare_and_set atomic v_old v_new then <span data-count="25867">(</span>) else <span data-count="0">l</span>oop f atomic
   in
   loop f atomic
 </code></pre>
