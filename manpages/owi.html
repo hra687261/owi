@@ -36,7 +36,7 @@
             const path_to_root = "../";
             const default_light_theme = "frappe";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d3067b77.js";
+            window.path_to_searchindex_js = "../searchindex-99916102.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-f5ed29f3.js"></script>
@@ -184,6 +184,9 @@ SYNOPSIS
        owi [COMMAND] …
 
 COMMANDS
+       abs [--unsafe] [OPTION]… FILE
+           Run the abstract interpreter
+
        analyze COMMAND …
            Analyze a program in different possible ways
 
@@ -192,6 +195,9 @@ COMMANDS
 
        c++ [OPTION]… FILE…
            Compile a C++ file to Wasm and run the symbolic interpreter on it
+
+       drun [--interactive] [--unsafe] [OPTION]… FILE
+           Run the denotational interpreter
 
        fmt [--inplace] [OPTION]… FILE…
            Format a .wat or .wast file
