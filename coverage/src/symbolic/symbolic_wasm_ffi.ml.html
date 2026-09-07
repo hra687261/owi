@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>symbolic_wasm_ffi.ml &mdash; Coverage report</title>
-    <meta name="description" content="69.96% coverage in src/symbolic/symbolic_wasm_ffi.ml">
+    <meta name="description" content="69.61% coverage in src/symbolic/symbolic_wasm_ffi.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -15,7 +15,7 @@
           <span class="dirname">src/symbolic/</span>symbolic_wasm_ffi.ml
         </a>
       </h1>
-      <h2>69.96%</h2>
+      <h2>69.61%</h2>
     </div>
     <div id="navbar">
       <span class="unvisited" style="top:15.81%"></span>
@@ -34,6 +34,7 @@
       <span class="unvisited" style="top:25.16%"></span>
       <span class="unvisited" style="top:25.48%"></span>
       <span class="unvisited" style="top:34.19%"></span>
+      <span class="unvisited" style="top:37.74%"></span>
       <span class="unvisited" style="top:39.68%"></span>
       <span class="unvisited" style="top:40.00%"></span>
       <span class="unvisited" style="top:40.32%"></span>
@@ -197,7 +198,7 @@
 <a id="L114"></a><span > </span>
 <a id="L115"></a><span class="visited"> </span>
 <a id="L116"></a><span > </span>
-<a id="L117"></a><span class="visited"> </span>
+<a id="L117"></a><span class="unvisited"> </span>
 <a id="L118"></a><span > </span>
 <a id="L119"></a><span > </span>
 <a id="L120"></a><span class="visited"> </span>
@@ -747,13 +748,13 @@ module M :
      and type f32 := Symbolic_value.f32
      and type f64 := Symbolic_value.f64
      and type v128 := Symbolic_value.v128 = struct
-  let covered_labels = Hashtbl.creat<span data-count="858">e</span> 16
+  let covered_labels = Hashtbl.creat<span data-count="895">e</span> 16
 
-  let cov_lock = Mutex.creat<span data-count="858">e</span> ()
+  let cov_lock = Mutex.creat<span data-count="895">e</span> ()
 
   let in_seacoral_store =
     let seacoral_store =
-      Option.bind (Bos.OS.Env.va<span data-count="858">r</span> "SC_STORE_MAP_FILE") @@ fun path -&gt;
+      Option.bind (Bos.OS.Env.va<span data-count="895">r</span> "SC_STORE_MAP_FILE") @@ fun path -&gt;
       <span data-count="0">l</span>et seacoral_size =
         match Bos.OS.Env.var "SC_LABEL_COUNT" with
         | <span data-count="0">S</span>ome s -&gt;
@@ -775,7 +776,7 @@ module M :
       <span data-count="0">L</span>og.app (fun m -&gt; <span data-count="0">m</span> "SC_STORE_MAP_FILE successfully mapped : %s" path);
       <span data-count="0">S</span>ome (fd, res)
     in
-    <span data-count="858">f</span>un i -&gt;
+    <span data-count="895">f</span>un i -&gt;
       <span data-count="2">m</span>atch seacoral_store with
       | <span data-count="2">N</span>one -&gt; false
       | <span data-count="0">S</span>ome (fd, arr) -&gt; (
@@ -790,7 +791,7 @@ module M :
     <span data-count="629">S</span>ymbolic_choice.assume (Symbolic_i32.to_boolea<span data-count="629">n</span> b)
 
   let assert' (b : Symbolic_i32.t) : unit Symbolic_choice.t =
-    <span data-count="60625">S</span>ymbolic_choice.assertion @@ Symbolic_i32.to_boolea<span data-count="60625">n</span> b
+    <span data-count="60624">S</span>ymbolic_choice.assertion @@ Symbolic_i32.to_boolea<span data-count="60624">n</span> b
 
   let symbol_invisible_bool () =
     (* TODO: should we change this to an i32 too? *)
@@ -820,9 +821,9 @@ module M :
     <span data-count="12">l</span>et+ () = assum<span data-count="12">e</span> (Symbolic_i32.l<span data-count="12">t</span> x hi) in
     <span data-count="12">x</span>
 
-  let abort () : unit Symbolic_choice.t = <span data-count="2">S</span>ymbolic_choice.prune ()
+  let abort () : unit Symbolic_choice.t = <span data-count="1">S</span>ymbolic_choice.prune ()
 
-  let exit (_p : Symbolic_i32.t) : unit Symbolic_choice.t = <span data-count="1">a</span>bort ()
+  let exit (_p : Symbolic_i32.t) : unit Symbolic_choice.t = <span data-count="0">a</span>bort ()
 
   let in_replay_mode () =
     <span data-count="4">S</span>ymbolic_choice.return @@ Symbolic_i32.of_boolea<span data-count="4">n</span> Symbolic_boolean.false_
@@ -890,27 +891,27 @@ open Symbolic_extern.Func
 open Symbolic_extern.Func.Syntax
 
 let owi =
-  [ ("i32_symbol", Extern_func (unit ^-&gt;<span data-count="858">.</span> i32, symbol_i32))
-  ; ("i64_symbol", Extern_func (unit ^-&gt;<span data-count="858">.</span> i64, symbol_i64))
-  ; ("f32_symbol", Extern_func (unit ^-&gt;<span data-count="858">.</span> f32, symbol_f32))
-  ; ("f64_symbol", Extern_func (unit ^-&gt;<span data-count="858">.</span> f64, symbol_f64))
-  ; ("v128_symbol", Extern_func (unit ^-&gt;<span data-count="858">.</span> v128, symbol_v128))
-  ; ("invisible_bool_symbol", Extern_func (unit ^-&gt;<span data-count="858">.</span> i32, symbol_invisible_bool))
-  ; ("range_symbol", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, symbol_range))
-  ; ("assume", Extern_func (i32 ^-&gt;<span data-count="858">.</span> unit, assume))
-  ; ("assert", Extern_func (i32 ^-&gt;<span data-count="858">.</span> unit, assert'))
-  ; ("in_replay_mode", Extern_func (unit ^-&gt;<span data-count="858">.</span> i32, in_replay_mode))
-  ; ("print_char", Extern_func (i32 ^-&gt;<span data-count="858">.</span> unit, print_char))
+  [ ("i32_symbol", Extern_func (unit ^-&gt;<span data-count="895">.</span> i32, symbol_i32))
+  ; ("i64_symbol", Extern_func (unit ^-&gt;<span data-count="895">.</span> i64, symbol_i64))
+  ; ("f32_symbol", Extern_func (unit ^-&gt;<span data-count="895">.</span> f32, symbol_f32))
+  ; ("f64_symbol", Extern_func (unit ^-&gt;<span data-count="895">.</span> f64, symbol_f64))
+  ; ("v128_symbol", Extern_func (unit ^-&gt;<span data-count="895">.</span> v128, symbol_v128))
+  ; ("invisible_bool_symbol", Extern_func (unit ^-&gt;<span data-count="895">.</span> i32, symbol_invisible_bool))
+  ; ("range_symbol", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, symbol_range))
+  ; ("assume", Extern_func (i32 ^-&gt;<span data-count="895">.</span> unit, assume))
+  ; ("assert", Extern_func (i32 ^-&gt;<span data-count="895">.</span> unit, assert'))
+  ; ("in_replay_mode", Extern_func (unit ^-&gt;<span data-count="895">.</span> i32, in_replay_mode))
+  ; ("print_char", Extern_func (i32 ^-&gt;<span data-count="895">.</span> unit, print_char))
   ; ( "cov_label_set"
-    , Extern_func (memor<span data-count="858">y</span> 0 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> unit, cov_label_set) )
-  ; ("cov_label_is_covered", Extern_func (i32 ^-&gt;<span data-count="858">.</span> i32, cov_label_is_covered))
+    , Extern_func (memor<span data-count="895">y</span> 0 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> unit, cov_label_set) )
+  ; ("cov_label_is_covered", Extern_func (i32 ^-&gt;<span data-count="895">.</span> i32, cov_label_is_covered))
   ; ( "open_scope_null_terminated"
-    , Extern_func (memor<span data-count="858">y</span> 0 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> unit, open_scope_null_terminated) )
+    , Extern_func (memor<span data-count="895">y</span> 0 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> unit, open_scope_null_terminated) )
   ; ( "open_scope_of_length"
-    , Extern_func (memor<span data-count="858">y</span> 0 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> unit, open_scope_of_length) )
-  ; ("close_scope", Extern_func (unit ^-&gt;<span data-count="858">.</span> unit, close_scope))
-  ; ("abort", Extern_func (unit ^-&gt;<span data-count="858">.</span> unit, abort))
-  ; ("exit", Extern_func (i32 ^-&gt;<span data-count="858">.</span> unit, exit))
+    , Extern_func (memor<span data-count="895">y</span> 0 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> unit, open_scope_of_length) )
+  ; ("close_scope", Extern_func (unit ^-&gt;<span data-count="895">.</span> unit, close_scope))
+  ; ("abort", Extern_func (unit ^-&gt;<span data-count="895">.</span> unit, abort))
+  ; ("exit", Extern_func (i32 ^-&gt;<span data-count="895">.</span> unit, exit))
   ]
 
 let args_get _ _ =
@@ -980,41 +981,41 @@ let random_get _ _ =
   <span data-count="1">S</span>ymbolic_choice.return Symbolic_i32.zero
 
 let wasi_snapshot_preview1 =
-  [ ("args_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, args_get))
-  ; ("args_sizes_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, args_sizes_get))
-  ; ("environ_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, environ_get))
-  ; ("environ_sizes_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, environ_sizes_get))
+  [ ("args_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, args_get))
+  ; ("args_sizes_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, args_sizes_get))
+  ; ("environ_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, environ_get))
+  ; ("environ_sizes_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, environ_sizes_get))
   ; ( "clock_time_get"
-    , Extern_func (i32 ^-<span data-count="858">&gt;</span> i64 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, clock_time_get) )
-  ; ("fd_close", Extern_func (i32 ^-&gt;<span data-count="858">.</span> i32, fd_close))
-  ; ("fd_fdstat_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_fdstat_get))
+    , Extern_func (i32 ^-<span data-count="895">&gt;</span> i64 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, clock_time_get) )
+  ; ("fd_close", Extern_func (i32 ^-&gt;<span data-count="895">.</span> i32, fd_close))
+  ; ("fd_fdstat_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_fdstat_get))
   ; ( "fd_fdstat_set_flags"
-    , Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_fdstat_set_flags) )
-  ; ("fd_filestat_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_filestat_get))
+    , Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_fdstat_set_flags) )
+  ; ("fd_filestat_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_filestat_get))
   ; ( "fd_filestat_set_size"
-    , Extern_func (i32 ^-<span data-count="858">&gt;</span> i64 ^-&gt;<span data-count="858">.</span> i32, fd_filestat_set_size) )
-  ; ("fd_prestat_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_prestat_get))
+    , Extern_func (i32 ^-<span data-count="895">&gt;</span> i64 ^-&gt;<span data-count="895">.</span> i32, fd_filestat_set_size) )
+  ; ("fd_prestat_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_prestat_get))
   ; ( "fd_prestat_dir_name"
-    , Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_prestat_dir_name) )
-  ; ("fd_read", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_read))
-  ; ("fd_seek", Extern_func (i32 ^-<span data-count="858">&gt;</span> i64 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_seek))
+    , Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_prestat_dir_name) )
+  ; ("fd_read", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_read))
+  ; ("fd_seek", Extern_func (i32 ^-<span data-count="895">&gt;</span> i64 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_seek))
   ; ( "fd_write"
-    , Extern_func (memor<span data-count="858">y</span> 0 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, fd_write)
+    , Extern_func (memor<span data-count="895">y</span> 0 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, fd_write)
     )
   ; ( "path_create_directory"
-    , Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, path_create_directory) )
+    , Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, path_create_directory) )
   ; ( "path_filestat_get"
     , Extern_func
-        (i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, path_filestat_get) )
+        (i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, path_filestat_get) )
   ; ( "path_open"
     , Extern_func
-        ( i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i64 ^-<span data-count="858">&gt;</span> i64 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32
-          ^-&gt;<span data-count="858">.</span> i32
+        ( i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i64 ^-<span data-count="895">&gt;</span> i64 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32
+          ^-&gt;<span data-count="895">.</span> i32
         , path_open ) )
   ; ( "poll_oneoff"
-    , Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, poll_oneoff) )
-  ; ("proc_exit", Extern_func (i32 ^-&gt;<span data-count="858">.</span> unit, proc_exit))
-  ; ("random_get", Extern_func (i32 ^-<span data-count="858">&gt;</span> i32 ^-&gt;<span data-count="858">.</span> i32, random_get))
+    , Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, poll_oneoff) )
+  ; ("proc_exit", Extern_func (i32 ^-&gt;<span data-count="895">.</span> unit, proc_exit))
+  ; ("random_get", Extern_func (i32 ^-<span data-count="895">&gt;</span> i32 ^-&gt;<span data-count="895">.</span> i32, random_get))
   ]
 </code></pre>
       </div>
