@@ -39,8 +39,8 @@ depends: [
   "prelude" {>= "0.5"}
   "processor" {>= "0.2"}
   "sedlex" {>= "3.3"}
-  "smtml" {>= "0.30.0"}
-  "symex" {>= "0.3"}
+  "smtml" {>= "0.31.0"}
+  "symex" {= "dev"}
   "synchronizer" {>= "0.3"}
   "uutf" {>= "1.0.3"}
   "xmlm" {>= "1.4.0"}
@@ -95,4 +95,5 @@ pin-depends: [
   ["landmarks.1.5" "git+https://github.com/hra687261/landmarks.git#cfc017b604f2c41ac0d8841f30a0b55b0d89cbaf"]
   ["landmarks-ppx.1.5" "git+https://github.com/hra687261/landmarks.git#cfc017b604f2c41ac0d8841f30a0b55b0d89cbaf"]
   ["codex.dev" "git+https://github.com/s41d/codex.git#05977de3acf12e18343a053be0f1fb936f8ec31c"]
+  ["symex.dev" "git+https://github.com/hra687261/symex.git#bump_smtml"]
 ]

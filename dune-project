@@ -70,9 +70,9 @@
   (sedlex
    (>= 3.3))
   (smtml
-   (>= 0.30.0))
+   (>= 0.31.0))
   (symex
-   (>= 0.3))
+   (= "dev"))
   (synchronizer
    (>= 0.3))
   (uutf
