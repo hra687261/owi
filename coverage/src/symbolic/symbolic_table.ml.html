@@ -251,22 +251,22 @@ type t =
   }
 
 let pp_map =
-  Fmt.brace<span data-count="895">s</span>
-    (Fmt.iter_binding<span data-count="895">s</span> ~sep:Fmt.semi IntMap.iter (fun ppf (k, v) -&gt;
+  Fmt.brace<span data-count="979">s</span>
+    (Fmt.iter_binding<span data-count="979">s</span> ~sep:Fmt.semi IntMap.iter (fun ppf (k, v) -&gt;
        <span data-count="0">F</span>mt.pf ppf "%d -&gt; %a" k Symbolic_ref.pp v ) )
 
 let pp ppf t = <span data-count="0">F</span>mt.pf ppf "%a" pp_map t.data
 
 let get t i =
-  <span data-count="3965">m</span>atch IntMap.find_opt i t.data with <span data-count="3965">S</span>ome v -&gt; v | None -&gt; assert false
+  <span data-count="3964">m</span>atch IntMap.find_opt i t.data with <span data-count="3964">S</span>ome v -&gt; v | None -&gt; assert false
 
 let set tbl i v =
-  <span data-count="710">l</span>et data = IntMap.add i v tbl.data in
-  <span data-count="710">{</span> tbl with data }
+  <span data-count="725">l</span>et data = IntMap.add i v tbl.data in
+  <span data-count="725">{</span> tbl with data }
 
-let size t = <span data-count="4137">I</span>ntMap.cardinal t.data
+let size t = <span data-count="4135">I</span>ntMap.cardinal t.data
 
-let typ t = <span data-count="3960">t</span>.typ
+let typ t = <span data-count="3959">t</span>.typ
 
 let max_size t =
   <span data-count="0">m</span>atch t.limits with
@@ -323,9 +323,9 @@ let get_min : Binary.Table.Type.limits -&gt; int = function
 let init (typ : Binary.Table.Type.t) : t =
   <span data-count="180">l</span>et limits, ((_null, heap_type) as typ) = typ in
   let size = get_min limits in
-  <span data-count="180">l</span>et l = List.init size (fun i -&gt; <span data-count="888">(</span>i, Symbolic_ref.nul<span data-count="888">l</span> heap_type)) in
+  <span data-count="180">l</span>et l = List.init size (fun i -&gt; <span data-count="903">(</span>i, Symbolic_ref.nul<span data-count="903">l</span> heap_type)) in
   <span data-count="180">l</span>et data =
-    List.fold_left (fun data (i, v) -&gt; <span data-count="888">I</span>ntMap.add i v data) IntMap.empty l
+    List.fold_left (fun data (i, v) -&gt; <span data-count="903">I</span>ntMap.add i v data) IntMap.empty l
   in
   <span data-count="180">{</span> data; limits; typ }
 

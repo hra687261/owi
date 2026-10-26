@@ -4,21 +4,21 @@ open Owi
 let extern_module : Concrete_extern.Module.t =
   (* some custom functions *)
   let rint : Concrete_i32.t ref Type.Id.t = Type.Id.make () in
-  let fresh i = Ok (ref i) in
+  let fresh_rint i = Concrete_choice.return (ref i) in
   let set r (i : Concrete_i32.t) =
     r := i;
-    Ok ()
+    Concrete_choice.return ()
   in
-  let get r = Ok !r in
+  let get r = Concrete_choice.return !r in
   let print_i32 (i : Concrete_i32.t) =
     Format.printf "%a\n%!" Concrete_i32.pp i;
-    Ok ()
+    Concrete_choice.return ()
   in
   (* we need to describe their types *)
   let open Concrete_extern.Func in
   let open Concrete_extern.Func.Syntax in
   [ ("print_i32", Extern_func (i32 ^->. unit, print_i32))
-  ; ("fresh", Extern_func (i32 ^->. externref rint, fresh))
+  ; ("fresh", Extern_func (i32 ^->. externref rint, fresh_rint))
   ; ("set_i32r", Extern_func (externref rint ^-> i32 ^->. unit, set))
   ; ("get_i32r", Extern_func (externref rint ^->. i32, get))
   ]
@@ -35,11 +35,16 @@ let pure_wasm_module =
 
 (* our pure wasm module, linked with `sausage` *)
 let modul, env =
-  Compile.Text.until_concrete_link env ~unsafe:false ~name:None pure_wasm_module
+  Compile.Wasm.Text.until_concrete_link env ~unsafe:false ~name:None
+    pure_wasm_module
   |> Stdlib.Result.get_ok
 
 module I = Interpret.Concrete (Interpret.Default_parameters)
 
+let to_run = I.modul ~env ~modul
+
 (* let's run it ! it will print the values as defined in the print_i32 function *)
 let () =
-  match I.modul ~env ~modul with Error _o -> assert false | Ok _env -> ()
+  match Concrete_choice.run to_run Concrete_state.empty with
+  | Error _o -> assert false
+  | Ok (_env, _state) -> ()
